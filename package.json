@@ -1,6 +1,6 @@
 {
 	"name": "css-typed",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Basic TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
@@ -38,12 +38,12 @@
 	},
 	"dependencies": {
 		"css-tree": "^2.3.1",
-		"glob": "^9.3.2"
+		"glob": "^10.3.4"
 	},
 	"devDependencies": {
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
-		"lint-staged": "^13.2.0",
+		"lint-staged": "^14.0.1",
 		"prettier": "^3.0.3"
 	},
 	"engines": {
