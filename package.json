@@ -28,12 +28,13 @@
 		"css-typed": "main.js"
 	},
 	"scripts": {
-		"format": "prettier -l '**/*.{json,md}' --ignore-path .gitignore",
+		"format": "prettier -l '**/*.{js,json,md}' --ignore-path .gitignore",
+		"format:fix": "npm run format -- -w",
 		"prepare": "is-ci || husky install",
 		"test": "echo 'Error: no test specified' && exit 1"
 	},
 	"lint-staged": {
-		"*.{json,md}": "prettier -w"
+		"*.{js,json,md}": "prettier -w"
 	},
 	"dependencies": {
 		"css-tree": "^2.3.1",
@@ -43,7 +44,7 @@
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
 		"lint-staged": "^13.2.0",
-		"prettier": "^2.8.6"
+		"prettier": "^3.0.3"
 	},
 	"engines": {
 		"node": ">=14"
