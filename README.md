@@ -122,7 +122,6 @@ improvements we could make. _All naming subject to bike shedding._
 - `ext`: Traditional (pre TS 5) extension naming with `*.css.d.ts`
 - `ignore`: Ignore support
 - `format`: Class name formatting
-  - (Related) Gracefully handle invalid names (example: kebab case)
 - `outDir`: Publish to a directory instead of next to the sources
 - `watch`: First-class watch mode
 - General CLI/UX improvements

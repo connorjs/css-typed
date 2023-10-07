@@ -42,7 +42,8 @@ async function generateDeclaration(path, time) {
 	const ast = parseCss(css, { filename: path });
 	walk(ast, (node) => {
 		if (node.type === `ClassSelector`) {
-			ts += `export const ${node.name}: string;\n`;
+			let cs = camelCase(node.name);
+			ts += `export const ${cs}: string;\n`;
 		}
 	});
 
@@ -53,4 +54,30 @@ async function generateDeclaration(path, time) {
 function dtsPath(path) {
 	const { dir, name, ext } = parsePath(path);
 	return join(dir, `${name}.d${ext}.ts`);
+}
+
+// The same camelCase function from css-loader that is used to provide
+// the class selector names to Gatsby.
+function camelCase(input) {
+  let result = input.trim();
+
+  if (result.length === 0) {
+    return "";
+  }
+
+  if (result.length === 1) {
+    return result.toLowerCase();
+  }
+
+  const hasUpperCase = result !== result.toLowerCase();
+
+  if (hasUpperCase) {
+    result = preserveCamelCase(result);
+  }
+
+  return result
+    .replace(/^[_.\- ]+/, "")
+    .toLowerCase()
+    .replace(/[_.\- ]+([\p{Alpha}\p{N}_]|$)/gu, (_, p1) => p1.toUpperCase())
+    .replace(/\d+([\p{Alpha}\p{N}_]|$)/gu, (m) => m.toUpperCase());
 }
