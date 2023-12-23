@@ -1,6 +1,6 @@
 {
 	"name": "css-typed",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"description": "Basic TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
@@ -18,12 +18,17 @@
 		"email": "dev.connorjs@gmail.com",
 		"url": "https://github.com/connorjs"
 	},
-	"files": [],
+	"files": [
+		"main.js"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/connorjs/css-typed.git"
 	},
 	"type": "module",
+	"engines": {
+		"node": ">=16"
+	},
 	"bin": {
 		"css-typed": "main.js"
 	},
@@ -36,17 +41,16 @@
 	"lint-staged": {
 		"*.{js,json,md}": "prettier -w"
 	},
+	"engineStrict": true,
 	"dependencies": {
 		"css-tree": "^2.3.1",
-		"glob": "^10.3.4"
+		"glob": "^10.3.10"
 	},
 	"devDependencies": {
+		"@types/css-tree": "^2.3.4",
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
-		"lint-staged": "^14.0.1",
-		"prettier": "^3.0.3"
-	},
-	"engines": {
-		"node": ">=14"
+		"lint-staged": "^15.2.0",
+		"prettier": "^3.1.1"
 	}
 }
