@@ -28,10 +28,6 @@ The [src](./src) directory contains the main and test sources.
 
 All contributions MUST adhere to the following expectations.
 
-> **Note**
->
-> I have not configured any GitHub actions yet.
-
 1. Every change MUST have unit tests.
 2. Every change MUST have a GitHub issue linked.
 3. Any configuration option change MUST be discussed in a GitHub issue first.
