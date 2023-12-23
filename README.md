@@ -108,6 +108,10 @@ Therefore, I wrote my own (very basic) implementation.
 [css-modules-loader-core]: https://www.npmjs.com/package/css-modules-loader-core
 [174]: https://github.com/css-modules/css-modules-loader-core/issues/174
 
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## Future
 
 This (very basic) implementation suited my immediate needs, but I see some improvements we could make.
