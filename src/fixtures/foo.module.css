@@ -1,15 +1,15 @@
 .foo {
-    color: red;
+	color: red;
 }
 
 .bar {
-    color: blue;
+	color: blue;
 }
 
 .foo .baz {
-    color: green;
+	color: green;
 }
 
 .fooBarBaz {
-    color: orange;
+	color: orange;
 }

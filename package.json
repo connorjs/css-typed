@@ -1,6 +1,6 @@
 {
 	"name": "css-typed",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Basic TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
@@ -35,7 +35,7 @@
 	"scripts": {
 		"build": "rm -rf dist && mkdir -p dist && cp src/main.js src/logic.js dist",
 		"ci-build": "npm-run-all -l -p format lint test build",
-		"format": "prettier -l '**/*.{cjs,js,json,md,yaml,yml}' --ignore-path .gitignore",
+		"format": "prettier -l '**/*.{cjs,css,js,json,md,yaml,yml}' --ignore-path .gitignore",
 		"lint": "eslint -f pretty .",
 		"prepare": "is-ci || husky install",
 		"prepublishOnly": "npm run ci-build",

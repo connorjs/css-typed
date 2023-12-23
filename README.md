@@ -52,6 +52,31 @@ Add `*.d.css.ts` to your `.gitignore` if appropriate.
 echo '*.d.css.ts' >> .gitignore
 ```
 
+## Options
+
+The following table lists the options `css-typed` supports.
+Prior to the `1.0` release, these may change often.
+
+| CLI option | Description                               |
+| :--------: | :---------------------------------------- |
+| `--dashes` | Specifies the convention used for locals. |
+
+### Dashes
+
+_Inspired by [postcss’ localsConvention](https://github.com/madyankin/postcss-modules/tree/master#localsconvention).
+Prior to `v1.0`, this option will evolve to more closely match the `localsConvention` option._
+
+The `--dashes` option changes the style of exported classnames, the exports in your TS.
+
+By default, `css-typed` will emit class names as-is if the name represents a valid JS/TS identifier.
+_Note: The logic for “valid” only checks hyphens (dashes, `-`) as of `v0.2.2`._
+
+When passed `dashes`, it will transform `kebab-case` classes (dashed names) to `camelCase`.
+For example, `my-class` becomes `myClass`.
+
+Use `--dashes` when your bundler or build system supports that transformation.
+For example, Vite and Gatsby support this.
+
 ## Recipes
 
 ### Run script

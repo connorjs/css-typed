@@ -6,7 +6,11 @@ import { parse as parseCss, walk } from "css-tree";
 
 /* globals process -- Node/CLI tool */
 
-export async function generateDeclaration(path, time) {
+export async function generateDeclaration(
+	/*string*/ path,
+	/*string*/ time,
+	/*{localsConvention?: "dashes"}*/ options,
+) {
 	// Handle case where the file got deleted by the time we got here
 	if (!existsSync(path)) return;
 
@@ -23,15 +27,31 @@ export async function generateDeclaration(path, time) {
 			// Skip duplicate names
 			if (exportedNames.has(node.name)) return;
 
-			ts += `export const ${node.name}: string;\n`;
-			exportedNames.add(node.name);
+			// Skip dashed names (kebab-case), unless `localsConvention` is `dashes`.
+			const nameHasDashes = hasDashes(node.name);
+			if (nameHasDashes && options.localsConvention !== `dashes`) return;
+
+			const nodeName = nameHasDashes ? dashesCamelCase(node.name) : node.name;
+
+			ts += `export const ${nodeName}: string;\n`;
+			exportedNames.add(nodeName);
 		}
 	});
 
 	return ts;
 }
 
-export function dtsPath(path) {
+function hasDashes(/*string*/ s) {
+	return s.includes(`-`);
+}
+
+// Modifies postcss-modules `dashesCamelCase` function to use `replaceAll` given
+// https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-string-replace-all.md
+function dashesCamelCase(/*string*/ s) {
+	return s.replaceAll(/-+(\w)/g, (_, firstLetter) => firstLetter.toUpperCase());
+}
+
+export function dtsPath(/*string*/ path) {
 	const { dir, name, ext } = parsePath(path);
 	return join(dir, `${name}.d${ext}.ts`);
 }
