@@ -6,13 +6,19 @@ import { parse as parseCss, walk } from "css-tree";
 
 /* globals process -- Node/CLI tool */
 
-export async function generateDeclaration(
-	/*string*/ path,
-	/*string*/ time,
-	/*{localsConvention?: "dashes"}*/ options,
-) {
+/**
+ * Generates TypeScript declaration file for the stylesheet file at the given
+ * `path`. Includes the given `time` in the generated comment.
+ *
+ * @param path {string} - Path to stylesheet file.
+ * @param time {string} - Timestamp string to include in generated comment.
+ * @param options {{localsConvention?: "dashes"}} - Options object.
+ * @returns {Promise<string | undefined>} TypeScript declaration file content or
+ *   `undefined` if no declarations to write.
+ */
+export async function generateDeclaration(path, time, options) {
 	// Handle case where the file got deleted by the time we got here
-	if (!existsSync(path)) return;
+	if (!existsSync(path)) return undefined;
 
 	const css = await readFile(path, `utf8`);
 
@@ -38,7 +44,8 @@ export async function generateDeclaration(
 		}
 	});
 
-	return ts;
+	// Only return TypeScript if we wrote something
+	return exportedNames.size === 0 ? undefined : ts;
 }
 
 function hasDashes(/*string*/ s) {

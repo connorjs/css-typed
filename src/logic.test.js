@@ -9,6 +9,11 @@ import { dtsPath, generateDeclaration } from "./logic.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe(`css-typed`, () => {
+	it(`should not generate an empty declaration file [#9]`, async () => {
+		const path = fixtureFile(`no-declaration-file.css`);
+		expect(await generateDeclaration(path, `$TIME`)).toBeUndefined();
+	});
+  
 	describe.each([
 		[`foo.css`, `foo.d.css.ts`, {}],
 		[`foo.module.css`, `foo.module.d.css.ts`, {}],
@@ -20,8 +25,8 @@ describe(`css-typed`, () => {
 		],
 	])(`%s → %s`, (inputFilename, outputFilename, options) => {
 		it(`should match expected output`, async () => {
-			const inputPath = join(__dirname, `fixtures`, inputFilename);
-			const outputPath = join(__dirname, `fixtures`, outputFilename);
+			const inputPath = fixtureFile(inputFilename);
+			const outputPath = fixtureFile(outputFilename);
 
 			const expected = readFileSync(outputPath, { encoding: `utf8` });
 
@@ -39,3 +44,7 @@ describe(`css-typed`, () => {
 		});
 	});
 });
+
+function fixtureFile(filename) {
+	return join(__dirname, `fixtures`, filename);
+}
