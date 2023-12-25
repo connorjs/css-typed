@@ -35,7 +35,15 @@ async function main(pattern) {
 	process.exit(0);
 }
 
+/**
+ * Writes the TypeScript declaration content to file. Handles the output path.
+ *
+ * @param path {string} - Path to the original stylesheet file. NOT the path to write.
+ * @param ts {string | undefined} - The TypeScript declaration content to write.
+ * @returns {Promise<undefined>} Empty promise indicating when writing has completed.
+ */
 async function writeDeclarationFile(path, ts) {
+	if (!ts) return undefined;
 	await writeFile(dtsPath(path), ts, `utf8`);
 	return undefined;
 }
