@@ -7,20 +7,22 @@ import { glob } from "glob";
 import { dtsPath, generateDeclaration } from "./logic.js";
 
 /* globals process -- Node/CLI tool */
-await main(process.argv[2]);
+await main(process.argv[2], process.argv[3] === `--dashes`);
+// See https://github.com/connorjs/css-typed/issues/5 for "proper" CLI arg handling
 
-async function main(pattern) {
+async function main(pattern, dashesEnabled) {
 	if (!pattern) {
 		console.error(`Expected glob pattern`);
 		process.exit(2);
 	}
+	const options = dashesEnabled ? { localsConvention: `dashes` } : {};
 
 	const files = await glob(pattern);
 
 	const time = new Date().toISOString();
 	const results = await Promise.all(
 		files.map((file) =>
-			generateDeclaration(file, time).then((ts) =>
+			generateDeclaration(file, time, options).then((ts) =>
 				writeDeclarationFile(file, ts),
 			),
 		),
