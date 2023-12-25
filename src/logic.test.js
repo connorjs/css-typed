@@ -13,7 +13,7 @@ describe(`css-typed`, () => {
 		const path = fixtureFile(`no-declaration-file.css`);
 		expect(await generateDeclaration(path, `$TIME`)).toBeUndefined();
 	});
-  
+
 	describe.each([
 		[`foo.css`, `foo.d.css.ts`, {}],
 		[`foo.module.css`, `foo.module.d.css.ts`, {}],
