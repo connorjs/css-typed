@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+// eslint-disable-next-line unicorn/import-style -- Leave as-is
 import { join, parse as parsePath, relative } from "node:path";
 
 import { parse as parseCss, walk } from "css-tree";
