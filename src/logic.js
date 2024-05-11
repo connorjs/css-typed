@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-// eslint-disable-next-line unicorn/import-style -- Leave as-is
-import { join, parse as parsePath, relative } from "node:path";
+import path from "node:path";
 
 import { parse as parseCss, walk } from "css-tree";
 
@@ -11,23 +10,23 @@ import { parse as parseCss, walk } from "css-tree";
  * Generates TypeScript declaration file for the stylesheet file at the given
  * `path`. Includes the given `time` in the generated comment.
  *
- * @param path {string} - Path to stylesheet file.
+ * @param stylesheetPath {string} - Path to stylesheet file.
  * @param time {string} - Timestamp string to include in generated comment.
  * @param options {{localsConvention?: "dashes"}} - Options object.
  * @returns {Promise<string | undefined>} TypeScript declaration file content or
  *   `undefined` if no declarations to write.
  */
-export async function generateDeclaration(path, time, options) {
+export async function generateDeclaration(stylesheetPath, time, options) {
 	// Handle case where the file got deleted by the time we got here
-	if (!existsSync(path)) return undefined;
+	if (!existsSync(stylesheetPath)) return undefined;
 
-	const css = await readFile(path, `utf8`);
+	const css = await readFile(stylesheetPath, `utf8`);
 
-	const pathRelativeToCwd = relative(process.cwd(), path);
+	const pathRelativeToCwd = path.relative(process.cwd(), stylesheetPath);
 
 	let ts = `// Generated from \`${pathRelativeToCwd}\` by css-typed at ${time}\n\n`;
 
-	const ast = parseCss(css, { filename: path });
+	const ast = parseCss(css, { filename: stylesheetPath });
 	const exportedNames = new Set();
 	walk(ast, (node) => {
 		if (node.type === `ClassSelector`) {
@@ -59,7 +58,7 @@ function dashesCamelCase(/*string*/ s) {
 	return s.replaceAll(/-+(\w)/g, (_, firstLetter) => firstLetter.toUpperCase());
 }
 
-export function dtsPath(/*string*/ path) {
-	const { dir, name, ext } = parsePath(path);
-	return join(dir, `${name}.d${ext}.ts`);
+export function dtsPath(/*string*/ stylesheetPath) {
+	const { dir, name, ext } = path.parse(stylesheetPath);
+	return path.join(dir, `${name}.d${ext}.ts`);
 }
