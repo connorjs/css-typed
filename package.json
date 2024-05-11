@@ -1,6 +1,6 @@
 {
 	"name": "css-typed",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"description": "Basic TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
@@ -34,28 +34,30 @@
 	],
 	"scripts": {
 		"build": "rm -rf dist && mkdir -p dist && cp src/main.js src/logic.js dist",
-		"ci-build": "npm-run-all -l -p format lint test build",
-		"format": "prettier -l '**/*.{cjs,css,js,json,md,yaml,yml}' --ignore-path .gitignore",
-		"lint": "eslint -f pretty .",
-		"prepare": "is-ci || husky install",
+		"ci-build": "npm-run-all -l -p build eslint prettier test",
+		"eslint": "eslint -f pretty .",
+		"eslint:fix": "npm run eslint -- --fix",
+		"prepare": "is-ci || husky husky",
 		"prepublishOnly": "npm run ci-build",
+		"prettier": "prettier -c '**/*.{cjs,css,js,json,md,yaml,yml}'",
+		"prettier:fix": "npm run prettier -- -w",
 		"test": "vitest run"
 	},
 	"engineStrict": true,
 	"dependencies": {
 		"css-tree": "^2.3.1",
-		"glob": "^10.3.10"
+		"glob": "^10.3.14"
 	},
 	"devDependencies": {
-		"@types/css-tree": "^2.3.4",
-		"eslint": "^8.56.0",
-		"eslint-config-connorjs": "^1.0.0-alpha.5",
-		"eslint-formatter-pretty": "^6.0.0",
-		"husky": "^8.0.3",
+		"@types/css-tree": "^2.3.7",
+		"eslint": "^8.57.0",
+		"eslint-config-connorjs": "^1.0.0-alpha.6",
+		"eslint-formatter-pretty": "^6.0.1",
+		"husky": "^9.0.11",
 		"is-ci": "^3.0.1",
-		"lint-staged": "^15.2.0",
+		"lint-staged": "^15.2.2",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^3.1.1",
-		"vitest": "^1.1.0"
+		"prettier": "^3.2.5",
+		"vitest": "^1.6.0"
 	}
 }
