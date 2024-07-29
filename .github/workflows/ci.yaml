@@ -66,10 +66,10 @@ jobs:
       - name: Run css-typed (the test)
         # `cp` and `diff` should work same on bash and pwsh
         run: |
-          cp src/fixtures/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
+          cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
           css-typed css-typed "$RUNNER_TEMP/*.css"
-          diff -sq src/fixtures/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -sq src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
           css-typed css-typed "RUNNER_TEMP/*.css" --dashes
-          diff -sq src/fixtures/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -sq src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
