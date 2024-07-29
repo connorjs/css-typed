@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  Build:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -26,9 +26,9 @@ jobs:
       - name: CI build
         run: npm run ci-build
 
-  test:
-    name: Test (${{ matrix.node }}|${{ matrix.platform.os }}|${{ matrix.platform.shell }})
-    needs: build # Verify ci-build first
+  Test:
+    name: Test (${{ matrix.node }} | ${{ matrix.platform.os }} | ${{ matrix.platform.shell }})
+    needs: Build # Verify ci-build first
 
     strategy:
       matrix:

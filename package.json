@@ -37,7 +37,6 @@
 		"ci-build": "npm-run-all -l -p build eslint prettier test",
 		"eslint": "eslint -f pretty .",
 		"eslint:fix": "npm run eslint -- --fix",
-		"prepare": "is-ci || husky husky",
 		"prepublishOnly": "npm run ci-build",
 		"prettier": "prettier -c '**/*.{cjs,css,js,json,md,yaml,yml}'",
 		"prettier:fix": "npm run prettier -- -w",
