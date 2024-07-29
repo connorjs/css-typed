@@ -13,12 +13,63 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           cache: npm
           node-version-file: .node-version
+
       - name: Install
         run: npm ci
+
       - name: CI build
         run: npm run ci-build
+
+  test:
+    name: Test (${{ matrix.node }}|${{ matrix.platform.os }}|${{ matrix.platform.shell }})
+    needs: build # Verify ci-build first
+
+    strategy:
+      matrix:
+        node: [20.x, 22.x]
+        platform:
+          - os: ubuntu-latest
+            shell: bash
+          - os: macos-latest
+            shell: bash
+          - os: windows-latest
+            shell: bash
+          - os: windows-latest
+            shell: pwsh
+          - os: windows-latest
+            shell: powershell
+
+    runs-on: ${{ matrix.platform.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.platform.shell }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version: ${{ matrix.node }}
+
+      - name: Install css-typed
+        run: npm install -g .
+
+      - name: Run css-typed (the test)
+        # `cp` and `diff` should work same on bash and pwsh
+        run: |
+          cp src/fixtures/kebab-case.css ${{ RUNNER_TEMP }}/kebab-case.css
+
+          css-typed css-typed '${{ RUNNER_TEMP }}/*.css'
+          diff -sq src/fixtures/kebab-case-default.d.css.ts ${{ RUNNER_TEMP }}/kebab-case.d.css.ts
+
+          css-typed css-typed '${{ RUNNER_TEMP }}/*.css' --dashes
+          diff -sq src/fixtures/kebab-case-dashes.d.css.ts ${{ RUNNER_TEMP }}/kebab-case.d.css.ts
