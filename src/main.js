@@ -15,7 +15,7 @@ await new Command()
 	.argument(`<pattern>`, `Glob path for CSS files to target.`)
 	.addOption(
 		new Option(
-			`--localsConvention`,
+			`--localsConvention [localsConvention]`,
 			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${version}#localsConvention`,
 		)
 			.choices([`camelCase`, `camelCaseOnly`, `dashes`, `dashesOnly`, `none`])
