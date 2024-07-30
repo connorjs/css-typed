@@ -73,7 +73,7 @@ jobs:
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
           node dist/main.js "$RUNNER_TEMP/*.css"
-          diff -I '//.*' src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -uI '//.*' src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
-          node dist/main.js "RUNNER_TEMP/*.css" --dashes
-          diff -I '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          node dist/main.js "$RUNNER_TEMP/*.css" --dashes
+          diff -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
