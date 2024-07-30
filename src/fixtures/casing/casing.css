@@ -1,0 +1,12 @@
+/* Example classes with various casing conventions. */
+
+.lowercase,
+.UPPERCASE,
+.camelCase,
+.PascalCase,
+.kebab-case,
+.snake_case,
+.SCREAM_CASE,
+.TRAIN-CASE {
+	display: flex;
+}

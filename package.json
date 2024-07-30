@@ -47,7 +47,8 @@
 		"@commander-js/extra-typings": "^12.1.0",
 		"commander": "^12.1.0",
 		"css-tree": "^2.3.1",
-		"glob": "^11.0.0"
+		"glob": "^11.0.0",
+		"lodash.camelcase": "^4.3.0"
 	},
 	"devDependencies": {
 		"@types/css-tree": "^2.3.8",
