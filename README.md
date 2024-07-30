@@ -1,14 +1,23 @@
+<div align="center">
+
 # css-typed
 
 TypeScript declaration generator for CSS files.
 
-**Table of contents**
+<img alt="css-typed logo" src="./css-typed.svg" width="500">
+
+</div>
+
+<details>
+<summary><strong>Table of Contents</strong></summary>
 
 - [Usage](#usage)
 - [Recipes](#recipes)
 - [Motivation](#motivation)
 - [Contributing](#contributing)
 - [Implementation details](#implementation-details)
+
+</details>
 
 ## Usage
 
