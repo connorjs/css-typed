@@ -14,17 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-  #      - name: Use Node.js
-  #        uses: actions/setup-node@v4
-  #        with:
-  #          cache: npm
-  #          node-version-file: .node-version
-  #
-  #      - name: Install
-  #        run: npm ci
-  #
-  #      - name: CI build
-  #        run: npm run ci-build
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .node-version
+
+      - name: Install
+        run: npm ci
+
+      - name: CI build
+        run: npm run ci-build
 
   Test:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }} | ${{ matrix.platform.shell }})
@@ -37,18 +37,18 @@ jobs:
       matrix:
         node:
           - 20.x
-        #          - 22.x
+          - 22.x
         platform:
           - os: ubuntu-latest
             shell: bash
-    #          - os: macos-latest
-    #            shell: bash
-    #          - os: windows-latest
-    #            shell: bash
-    #          - os: windows-latest
-    #            shell: pwsh
-    #          - os: windows-latest
-    #            shell: powershell
+          - os: macos-latest
+            shell: bash
+          - os: windows-latest
+            shell: bash
+          - os: windows-latest
+            shell: pwsh
+          - os: windows-latest
+            shell: powershell
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
       - name: Run css-typed (the test)
         # `cp` and `diff` should work same on bash and pwsh
         # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
-        # Use `-I '//.*'` to ignore the first line which has generated path and timestamp
+        # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp
         run: |
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
