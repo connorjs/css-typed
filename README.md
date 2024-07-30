@@ -47,35 +47,36 @@ Configure TypeScript to allow arbitrary extensions (TS 5+).
 ```
 
 Add `*.d.css.ts` to your `.gitignore` if appropriate.
+(See [#4] for more information about alternative output directory.)
 
 ```shell
 echo '*.d.css.ts' >> .gitignore
 ```
 
+[#4]: https://github.com/connorjs/css-typed/issues/4
+
 ## Options
 
 The following table lists the options `css-typed` supports.
-Prior to the `1.0` release, these may change often.
+Also run `css-typed -h` on the command line.
 
-| CLI option | Description                               |
-| :--------: | :---------------------------------------- |
-| `--dashes` | Specifies the convention used for locals. |
+|      CLI option      |   Default    | Description                    |
+| :------------------: | :----------: | :----------------------------- |
+| `--localsConvention` | `dashesOnly` | Style of exported class names. |
 
-### Dashes
+### localsConvention
 
-_Inspired by [postcss’ localsConvention](https://github.com/madyankin/postcss-modules/tree/master#localsconvention).
-Prior to `v1.0`, this option will evolve to more closely match the `localsConvention` option._
+Inspired by [postcss localsConvention](https://github.com/madyankin/postcss-modules#localsconvention).
+Adds `none` option value to use the class name as-is.
 
-The `--dashes` option changes the style of exported classnames, the exports in your TS.
+The `--localsConvention` option changes the style of exported class names, the exports in your TS (i.e., the JS names).
 
-By default, `css-typed` will emit class names as-is if the name represents a valid JS/TS identifier.
-_Note: The logic for “valid” only checks hyphens (dashes, `-`) as of `v0.2.2`._
+`css-typed` will only camelize dashes in class names by default (the `dashesOnly` option value).
+It will not preserve the original class name.
+For example, `my-class` becomes `myClass` and you cannot use `my-class` in JS/TS code.
 
-When passed `dashes`, it will transform `kebab-case` classes (dashed names) to `camelCase`.
-For example, `my-class` becomes `myClass`.
-
-Use `--dashes` when your bundler or build system supports that transformation.
-For example, Vite and Gatsby support this.
+Modern bundlers or build system such as Vite and Gatsby support this transformation.
+The default matches CSS naming practices (`kebab-case`).
 
 ## Recipes
 

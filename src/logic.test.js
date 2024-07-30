@@ -14,12 +14,13 @@ describe(`css-typed`, () => {
 	describe.each([
 		[`foo.css`, `foo.d.css.ts`, {}],
 		[`foo.module.css`, `foo.module.d.css.ts`, {}],
-		[`kebab-case/kebab-case.css`, `kebab-case/kebab-case-default.d.css.ts`, {}],
-		[
-			`kebab-case/kebab-case.css`,
-			`kebab-case/kebab-case-dashes.d.css.ts`,
-			{ localsConvention: `dashes` },
-		],
+		...[`camelCase`, `camelCaseOnly`, `dashes`, `dashesOnly`, `none`].map(
+			(localsConvention) => [
+				`casing/casing.css`,
+				`casing/${localsConvention}.d.css.ts`,
+				{ localsConvention },
+			],
+		),
 	])(`%s → %s`, (inputFilename, outputFilename, options) => {
 		it(`should match expected output`, async () => {
 			const inputPath = fixtureFile(inputFilename);

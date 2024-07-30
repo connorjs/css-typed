@@ -2,7 +2,7 @@
 
 import { writeFile } from "node:fs/promises";
 
-import { Command } from "@commander-js/extra-typings";
+import { Command, Option } from "@commander-js/extra-typings";
 import { glob } from "glob";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
@@ -13,22 +13,21 @@ await new Command()
 	.description(`TypeScript declaration generator for CSS files.`)
 	.version(version)
 	.argument(`<pattern>`, `Glob path for CSS files to target.`)
-	.option(
-		`--dashes`,
-		`Transform kebab-case classes (dashed names) to camelCase.`,
-		false,
+	.addOption(
+		new Option(
+			`--localsConvention`,
+			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${version}#localsConvention`,
+		)
+			.choices([`camelCase`, `camelCaseOnly`, `dashes`, `dashesOnly`, `none`])
+			.default(`camelCaseOnly`),
 	)
 	.action(async function (pattern, options, program) {
-		const declarationOptions = options.dashes
-			? { localsConvention: `dashes` }
-			: {};
-
 		const files = await glob(pattern);
 
 		const time = new Date().toISOString();
 		const results = await Promise.all(
 			files.map((file) =>
-				generateDeclaration(file, time, declarationOptions).then((ts) =>
+				generateDeclaration(file, time, options).then((ts) =>
 					writeDeclarationFile(file, ts),
 				),
 			),

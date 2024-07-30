@@ -1,0 +1,33 @@
+/* Originally from https://github.com/connorjs/css-typed/pull/1 */
+
+.lowercase {
+	display: flex;
+}
+
+.UPPERCASE {
+	display: flex;
+}
+
+.camelCase {
+	display: flex;
+}
+
+.PascalCase {
+	display: flex;
+}
+
+.kebab-case {
+	display: flex;
+}
+
+.snake_case {
+	display: flex;
+}
+
+.SCREAM_CASE {
+	display: flex;
+}
+
+.TRAIN-CASE {
+	display: flex;
+}

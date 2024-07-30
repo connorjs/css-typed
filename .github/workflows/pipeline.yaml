@@ -78,18 +78,18 @@ jobs:
       - name: Run css-typed (the test)
         # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
         # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp
-        # Test --dashes in both positions
+        # Test `--localsConvention camelCase` in both positions
         run: |
-          cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
+          cp src/fixtures/casing/casing.css "$RUNNER_TEMP/casing.css"
 
           node dist/main.js "$RUNNER_TEMP/*.css"
-          diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/dashesOnly.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
-          node dist/main.js "$RUNNER_TEMP/*.css" --dashes
-          diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          node dist/main.js "$RUNNER_TEMP/*.css" --localsConvention camelCase
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCase.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
-          node dist/main.js --dashes "$RUNNER_TEMP/*.css" 
-          diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          node dist/main.js --localsConvention camelCase "$RUNNER_TEMP/*.css" 
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCase.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -114,7 +114,7 @@ jobs:
 
       - name: Set version
         run: |
-          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
+          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}-alpha/g'
           sed -i "$expr" package.json
           sed -i "$expr" src/version.js
 
@@ -122,11 +122,11 @@ jobs:
         run: npm install --omit=dev
 
       - name: Publish
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --tag alpha
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: git tag
         run: |
-          git tag v${{ env.GitVersion_SemVer }}
-          git push origin tag v${{ env.GitVersion_SemVer }}
+          git tag v${{ env.GitVersion_SemVer }}-alpha
+          git push origin tag v${{ env.GitVersion_SemVer }}-alpha
