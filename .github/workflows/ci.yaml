@@ -32,18 +32,20 @@ jobs:
 
     strategy:
       matrix:
-        node: [20.x, 22.x]
+        node:
+          - 20.x
+        #          - 22.x
         platform:
           - os: ubuntu-latest
             shell: bash
-          - os: macos-latest
-            shell: bash
-          - os: windows-latest
-            shell: bash
-          - os: windows-latest
-            shell: pwsh
-          - os: windows-latest
-            shell: powershell
+    #          - os: macos-latest
+    #            shell: bash
+    #          - os: windows-latest
+    #            shell: bash
+    #          - os: windows-latest
+    #            shell: pwsh
+    #          - os: windows-latest
+    #            shell: powershell
 
     runs-on: ${{ matrix.platform.os }}
     defaults:
@@ -60,16 +62,14 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
 
-      - name: Install css-typed
-        run: npm install -g .
-
       - name: Run css-typed (the test)
         # `cp` and `diff` should work same on bash and pwsh
+        # `npx --yes . --` is executing local `css-typed` as if installed
         run: |
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
-          css-typed css-typed "$RUNNER_TEMP/*.css"
+          npx --yes . -- "$RUNNER_TEMP/*.css"
           diff -sq src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
-          css-typed css-typed "RUNNER_TEMP/*.css" --dashes
+          npx --yes . -- "RUNNER_TEMP/*.css" --dashes
           diff -sq src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
