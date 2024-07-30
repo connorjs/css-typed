@@ -68,11 +68,12 @@ jobs:
       - name: Run css-typed (the test)
         # `cp` and `diff` should work same on bash and pwsh
         # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
+        # Use `-I '//.*'` to ignore the first line which has generated path and timestamp
         run: |
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
           node dist/main.js "$RUNNER_TEMP/*.css"
-          diff -s src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -I '//.*' src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
           node dist/main.js "RUNNER_TEMP/*.css" --dashes
-          diff -s src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -I '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
