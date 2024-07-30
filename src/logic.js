@@ -16,7 +16,7 @@ import { parse as parseCss, walk } from "css-tree";
  * @returns {Promise<string | undefined>} TypeScript declaration file content or
  *   `undefined` if no declarations to write.
  */
-export async function generateDeclaration(stylesheetPath, time, options) {
+export async function generateDeclaration(stylesheetPath, time, options = {}) {
 	// Handle case where the file got deleted by the time we got here
 	if (!existsSync(stylesheetPath)) return undefined;
 

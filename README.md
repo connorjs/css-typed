@@ -1,6 +1,6 @@
 # css-typed
 
-Basic TypeScript declaration generator for CSS files.
+TypeScript declaration generator for CSS files.
 
 **Table of contents**
 

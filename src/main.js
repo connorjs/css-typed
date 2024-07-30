@@ -2,40 +2,44 @@
 
 import { writeFile } from "node:fs/promises";
 
+import { Command } from "@commander-js/extra-typings";
 import { glob } from "glob";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
+import { version } from "./version.js";
 
-/* globals process -- Node/CLI tool */
-await main(process.argv[2], process.argv[3] === `--dashes`);
-// See https://github.com/connorjs/css-typed/issues/5 for "proper" CLI arg handling
+await new Command()
+	.name(`css-typed`)
+	.description(`TypeScript declaration generator for CSS files.`)
+	.version(version)
+	.argument(`<pattern>`, `Glob path for CSS files to target.`)
+	.option(
+		`--dashes`,
+		`Transform kebab-case classes (dashed names) to camelCase.`,
+		false,
+	)
+	.action(async function (pattern, options, program) {
+		const declarationOptions = options.dashes
+			? { localsConvention: `dashes` }
+			: {};
 
-async function main(pattern, dashesEnabled) {
-	if (!pattern) {
-		console.error(`Expected glob pattern`);
-		process.exit(2);
-	}
-	const options = dashesEnabled ? { localsConvention: `dashes` } : {};
+		const files = await glob(pattern);
 
-	const files = await glob(pattern);
-
-	const time = new Date().toISOString();
-	const results = await Promise.all(
-		files.map((file) =>
-			generateDeclaration(file, time, options).then((ts) =>
-				writeDeclarationFile(file, ts),
+		const time = new Date().toISOString();
+		const results = await Promise.all(
+			files.map((file) =>
+				generateDeclaration(file, time, declarationOptions).then((ts) =>
+					writeDeclarationFile(file, ts),
+				),
 			),
-		),
-	);
+		);
 
-	const errors = results.filter(Boolean);
-	if (errors.length > 0) {
-		console.error(`Errors encountered`, errors);
-		process.exit(3);
-	}
-
-	process.exit(0);
-}
+		const errors = results.filter(Boolean);
+		if (errors.length > 0) {
+			program.error(`Errors encountered: ${errors}`);
+		}
+	})
+	.parseAsync();
 
 /**
  * Writes the TypeScript declaration content to file. Handles the output path.

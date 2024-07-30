@@ -35,6 +35,12 @@ jobs:
           cache: npm
           node-version-file: .node-version
 
+      - name: Set version
+        run: |
+          $expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
+          sed -i $expr package.json
+          sed -i $expr src/version.js
+
       - name: Install
         run: npm ci
 
@@ -78,6 +84,7 @@ jobs:
       - name: Run css-typed (the test)
         # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
         # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp
+        # Test --dashes in both positions
         run: |
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
@@ -85,6 +92,9 @@ jobs:
           diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
           node dist/main.js "$RUNNER_TEMP/*.css" --dashes
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+
+          node dist/main.js --dashes "$RUNNER_TEMP/*.css" 
           diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
   Publish:
@@ -109,7 +119,10 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Set version
-        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
+        run: |
+          $expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
+          sed -i $expr package.json
+          sed -i $expr src/version.js
 
       - name: Install
         run: npm install --omit=dev
