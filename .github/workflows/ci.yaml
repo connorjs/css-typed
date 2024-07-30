@@ -42,6 +42,7 @@ jobs:
           - os: ubuntu-latest
           - os: macos-latest
           - os: windows-latest
+      fail-fast: false
 
     steps:
       - name: Checkout
