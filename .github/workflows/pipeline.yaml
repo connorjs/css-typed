@@ -70,7 +70,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install
-        run: npm install --omit=dev
+        run: npm install
 
       - name: Build
         run: npm run build
@@ -116,7 +116,7 @@ jobs:
         run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
 
       - name: Install
-        run: npm install --omit=dev
+        run: npm install
 
       - name: Publish
         run: npm publish --provenance --access public
