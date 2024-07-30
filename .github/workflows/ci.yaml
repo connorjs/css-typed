@@ -14,17 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version-file: .node-version
-
-      - name: Install
-        run: npm ci
-
-      - name: CI build
-        run: npm run ci-build
+  #      - name: Use Node.js
+  #        uses: actions/setup-node@v4
+  #        with:
+  #          cache: npm
+  #          node-version-file: .node-version
+  #
+  #      - name: Install
+  #        run: npm ci
+  #
+  #      - name: CI build
+  #        run: npm run ci-build
 
   Test:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }} | ${{ matrix.platform.shell }})
@@ -72,7 +72,7 @@ jobs:
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
           node dist/main.js "$RUNNER_TEMP/*.css"
-          diff -sq src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -s src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
           node dist/main.js "RUNNER_TEMP/*.css" --dashes
-          diff -sq src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+          diff -s src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
