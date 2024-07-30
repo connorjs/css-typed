@@ -37,9 +37,9 @@ jobs:
 
       - name: Set version
         run: |
-          $expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
-          sed -i $expr package.json
-          sed -i $expr src/version.js
+          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
+          sed -i "$expr" package.json
+          sed -i "$expr" src/version.js
 
       - name: Install
         run: npm ci
