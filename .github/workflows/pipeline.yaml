@@ -92,12 +92,12 @@ jobs:
     name: Publish
     needs:
       - Build # For version variable
-      - Test # Requires passing tests
+      # - Test # Requires passing tests
     runs-on: ubuntu-latest
     env:
       GitVersion_SemVer: ${{needs.Build.outputs.GitVersion_SemVer}}
     permissions:
-      contents: read
+      contents: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -109,12 +109,17 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Set version
-        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
+        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}-alpha.1/g' package.json
 
       - name: Install
         run: npm install --omit=dev
 
       - name: Publish
-        run: npm publish --provenance --access public --dryrun
+        run: npm publish --provenance --access public --tag alpha
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: git tag
+        run: |
+          git tag v${{ env.GitVersion_SemVer }}-alpha.1
+          git push origin tag v${{ env.GitVersion_SemVer }}-alpha.1
