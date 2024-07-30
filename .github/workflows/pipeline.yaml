@@ -1,4 +1,4 @@
-name: CI
+name: Pipeline
 
 on:
   push:
@@ -10,9 +10,24 @@ jobs:
   Build:
     name: Build
     runs-on: ubuntu-latest
+    outputs:
+      GitVersion_SemVer: ${{ steps.GitVersion.outputs.GitVersion_SemVer }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full depth (not shallow) for GitVersion and better relevancy of Sonar analysis
+
+      - name: Set up GitVersion
+        uses: gittools/actions/gitversion/setup@v2.0.1
+        with:
+          versionSpec: 6.x
+
+      - name: Execute GitVersion
+        id: GitVersion
+        uses: gittools/actions/gitversion/execute@v2.0.1
+        with:
+          useConfigFile: true
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -55,7 +70,7 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install production
-        run: npm ci --include prod
+        run: npm i --include prod
 
       - name: Build production
         run: npm run build
@@ -71,3 +86,34 @@ jobs:
 
           node dist/main.js "$RUNNER_TEMP/*.css" --dashes
           diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
+
+  Publish:
+    # if: ${{ github.ref == 'refs/heads/main' }}
+    name: Publish
+    needs:
+      - Build # For version variable
+      - Test # Requires passing tests
+    runs-on: ubuntu-latest
+    env:
+      GitVersion_SemVer: ${{needs.Build.outputs.GitVersion_SemVer}}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .node-version
+          registry-url: https://registry.npmjs.org
+
+      - name: Set version
+        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
+
+      - name: Install
+        run: npm i --include prod
+
+      - name: Publish
+        run: npm publish --provenance --access public --dryrun
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
