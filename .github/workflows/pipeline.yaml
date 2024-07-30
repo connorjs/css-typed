@@ -69,10 +69,10 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
 
-      - name: Install production
-        run: npm i --include prod
+      - name: Install
+        run: npm install --omit=dev
 
-      - name: Build production
+      - name: Build
         run: npm run build
 
       - name: Run css-typed (the test)
@@ -97,7 +97,8 @@ jobs:
     env:
       GitVersion_SemVer: ${{needs.Build.outputs.GitVersion_SemVer}}
     permissions:
-      contents: write
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -111,7 +112,7 @@ jobs:
         run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
 
       - name: Install
-        run: npm i --include prod
+        run: npm install --omit=dev
 
       - name: Publish
         run: npm publish --provenance --access public --dryrun
