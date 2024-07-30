@@ -6,7 +6,9 @@ import { Command, Option } from "@commander-js/extra-typings";
 import { glob } from "glob";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
-import { version } from "./version.js";
+
+// eslint-disable-next-line no-undef -- ESBuild replaces with package.json version
+const version = VERSION;
 
 await new Command()
 	.name(`css-typed`)
