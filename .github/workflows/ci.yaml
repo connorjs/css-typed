@@ -64,12 +64,12 @@ jobs:
 
       - name: Run css-typed (the test)
         # `cp` and `diff` should work same on bash and pwsh
-        # `npx --yes . --` is executing local `css-typed` as if installed
+        # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
         run: |
           cp src/fixtures/kebab-case/kebab-case.css "$RUNNER_TEMP/kebab-case.css"
 
-          npx --yes . -- "$RUNNER_TEMP/*.css"
+          node dist/main.js "$RUNNER_TEMP/*.css"
           diff -sq src/fixtures/kebab-case/kebab-case-default.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
-          npx --yes . -- "RUNNER_TEMP/*.css" --dashes
+          node dist/main.js "RUNNER_TEMP/*.css" --dashes
           diff -sq src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
