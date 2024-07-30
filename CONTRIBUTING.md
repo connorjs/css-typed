@@ -30,9 +30,9 @@ All contributions MUST adhere to the following expectations.
 
 1. Every change MUST have unit tests.
 2. Every change MUST have a GitHub issue linked.
-3. Any configuration option change MUST be discussed in a GitHub issue first.
-4. I will squash-merge the changeset into `main` upon approval.
-5. I will publish the new version upon approval (not yet automated).
+3. Any configuration option change SHOULD be discussed in a GitHub issue first.
+4. The PR build (see [pipeline.yaml](./.github/workflows/pipeline.yaml)) MUST succeed.
+5. I will squash-merge the changeset into `main` upon approval.
 
 [RFC2119]: https://www.rfc-editor.org/rfc/rfc2119
 [RFC8174]: https://www.rfc-editor.org/rfc/rfc8174

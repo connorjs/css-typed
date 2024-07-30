@@ -1,6 +1,6 @@
 {
 	"name": "css-typed",
-	"version": "0.2.4",
+	"version": "0.0.0-gitversion",
 	"description": "Basic TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
@@ -37,7 +37,7 @@
 		"ci-build": "npm-run-all -l -p build eslint prettier test",
 		"eslint": "eslint -f pretty .",
 		"eslint:fix": "npm run eslint -- --fix",
-		"prepublishOnly": "npm run ci-build",
+		"prepublishOnly": "npm run build",
 		"prettier": "prettier -c '**/*.{cjs,css,js,json,md,yaml,yml}'",
 		"prettier:fix": "npm run prettier -- -w",
 		"test": "vitest run"
