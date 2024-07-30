@@ -1,4 +1,4 @@
-// Generated from `src/fixtures/locals-convention/locals-convention.css` by css-typed at $TIME
+// Generated from `src/fixtures/casing/casing.css` by css-typed at $TIME
 
 export const lowercase: string;
 export const UPPERCASE: string;
