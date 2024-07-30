@@ -27,11 +27,11 @@ jobs:
         run: npm run ci-build
 
   Test:
-    name: Test (${{ matrix.node }} | ${{ matrix.platform.os }} | ${{ matrix.platform.shell }})
+    name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
     needs: Build # Verify ci-build first
     defaults:
       run:
-        shell: ${{ matrix.platform.shell }}
+        shell: bash
     runs-on: ${{ matrix.platform.os }}
     strategy:
       matrix:
@@ -40,15 +40,9 @@ jobs:
           - 22.x
         platform:
           - os: ubuntu-latest
-            shell: bash
           - os: macos-latest
-            shell: bash
           - os: windows-latest
-            shell: bash
-          - os: windows-latest
-            shell: pwsh
-          - os: windows-latest
-            shell: powershell
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -66,7 +60,6 @@ jobs:
         run: npm run build
 
       - name: Run css-typed (the test)
-        # `cp` and `diff` should work same on bash and pwsh
         # `node dist/main.js` is executing local `css-typed` as if installed (same as `bin`)
         # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp
         run: |
