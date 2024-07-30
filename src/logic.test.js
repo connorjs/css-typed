@@ -1,12 +1,9 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import { describe, expect, it } from "vitest";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe(`css-typed`, () => {
 	it(`should not generate an empty declaration file [#9]`, async () => {
@@ -46,5 +43,5 @@ describe(`css-typed`, () => {
 });
 
 function fixtureFile(filename) {
-	return path.join(__dirname, `fixtures`, filename);
+	return path.join(import.meta.dirname, `fixtures`, filename);
 }

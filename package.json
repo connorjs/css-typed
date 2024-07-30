@@ -1,7 +1,7 @@
 {
 	"name": "css-typed",
 	"version": "0.0.0-gitversion",
-	"description": "Basic TypeScript declaration generator for CSS files",
+	"description": "TypeScript declaration generator for CSS files",
 	"keywords": [
 		"CSS",
 		"modules",
@@ -33,7 +33,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "rm -rf dist && mkdir -p dist && cp src/main.js src/logic.js dist",
+		"build": "rm -rf dist && mkdir -p dist && cp src/main.js src/logic.js src/version.js dist",
 		"ci-build": "npm-run-all -l -p build eslint prettier test",
 		"eslint": "eslint -f pretty .",
 		"eslint:fix": "npm run eslint -- --fix",
@@ -44,8 +44,10 @@
 	},
 	"engineStrict": true,
 	"dependencies": {
+		"@commander-js/extra-typings": "^12.1.0",
+		"commander": "^12.1.0",
 		"css-tree": "^2.3.1",
-		"glob": "^10.3.14"
+		"glob": "^11.0.0"
 	},
 	"devDependencies": {
 		"@types/css-tree": "^2.3.8",
