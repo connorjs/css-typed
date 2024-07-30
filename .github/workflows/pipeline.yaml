@@ -88,11 +88,11 @@ jobs:
           diff --strip-trailing-cr -uI '//.*' src/fixtures/kebab-case/kebab-case-dashes.d.css.ts "$RUNNER_TEMP/kebab-case.d.css.ts"
 
   Publish:
-    # if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     name: Publish
     needs:
       - Build # For version variable
-      # - Test # Requires passing tests
+      - Test # Requires passing tests
     runs-on: ubuntu-latest
     env:
       GitVersion_SemVer: ${{needs.Build.outputs.GitVersion_SemVer}}
@@ -109,17 +109,17 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Set version
-        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}-alpha.1/g' package.json
+        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
 
       - name: Install
         run: npm install --omit=dev
 
       - name: Publish
-        run: npm publish --provenance --access public --tag alpha
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: git tag
         run: |
-          git tag v${{ env.GitVersion_SemVer }}-alpha.1
-          git push origin tag v${{ env.GitVersion_SemVer }}-alpha.1
+          git tag v${{ env.GitVersion_SemVer }}
+          git push origin tag v${{ env.GitVersion_SemVer }}
