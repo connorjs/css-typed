@@ -113,10 +113,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Set version
-        run: |
-          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
-          sed -i "$expr" package.json
-          sed -i "$expr" src/version.js
+        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
 
       - name: Install
         run: npm install --omit=dev

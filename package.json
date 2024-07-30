@@ -33,13 +33,13 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "rm -rf dist && mkdir -p dist && cp src/main.js src/logic.js src/version.js dist",
+		"build": "node scripts/build.js",
 		"ci-build": "npm-run-all -l -p build eslint prettier test",
-		"eslint": "eslint -f pretty .",
-		"eslint:fix": "npm run eslint -- --fix",
+		"eslint": "eslint --format pretty .",
+		"eslint:fix": "eslint --format pretty . --fix",
 		"prepublishOnly": "npm run build",
-		"prettier": "prettier -c '**/*.{cjs,css,js,json,md,yaml,yml}'",
-		"prettier:fix": "npm run prettier -- -w",
+		"prettier": "prettier --check .",
+		"prettier:fix": "prettier --write .",
 		"test": "vitest run"
 	},
 	"engineStrict": true,
@@ -52,6 +52,7 @@
 	},
 	"devDependencies": {
 		"@types/css-tree": "^2.3.8",
+		"esbuild": "~0.23.0",
 		"eslint-config-connorjs": "^1.0.0-beta.2",
 		"husky": "^9.1.4",
 		"is-ci": "^3.0.1",
