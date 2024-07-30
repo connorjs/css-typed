@@ -19,7 +19,7 @@ await new Command()
 			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${version}#localsConvention`,
 		)
 			.choices([`camelCase`, `camelCaseOnly`, `dashes`, `dashesOnly`, `none`])
-			.default(`camelCaseOnly`),
+			.default(`dashesOnly`),
 	)
 	.action(async function (pattern, options, program) {
 		const files = await glob(pattern);

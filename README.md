@@ -78,6 +78,14 @@ For example, `my-class` becomes `myClass` and you cannot use `my-class` in JS/TS
 Modern bundlers or build system such as Vite and Gatsby support this transformation.
 The default matches CSS naming practices (`kebab-case`).
 
+> **IMPORTANT**
+>
+> Note that the non-`*Only` values MAY have TypeScript bugs.
+> TypeScript 5.6 may help with the named exports for these.
+>
+> If you encounter a bug, please file an issue.
+> In the mean-time, consider using `camelCaseOnly` instead (or `dashesOnly` which is the default).
+
 ## Recipes
 
 ### Run script
@@ -87,8 +95,8 @@ To run it as part of your build, you will likely include it as a run script, may
 ```json
 {
 	"scripts": {
-		"codegen": "css-typed 'src/**/*.css'",
-		"pretsc": "css-typed 'src/**/*.css'",
+		"codegen": "css-typed \"src/**/*.css\"",
+		"pretsc": "css-typed \"src/**/*.css\"",
 		"tsc": "tsc"
 	}
 }
@@ -102,8 +110,8 @@ Feel free to [nodemon] or similar.
 ```json
 {
 	"scripts": {
-		"codegen": "css-typed 'src/**/*.css'",
-		"codegen:watch": "nodemon -x 'npm run codegen' -w src -e css"
+		"codegen": "css-typed \"src/**/*.css\"",
+		"codegen:watch": "nodemon -x \"npm run codegen\" -w src -e css"
 	}
 }
 ```

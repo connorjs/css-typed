@@ -114,7 +114,7 @@ jobs:
 
       - name: Set version
         run: |
-          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}-alpha/g'
+          expr='s/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g'
           sed -i "$expr" package.json
           sed -i "$expr" src/version.js
 
@@ -122,11 +122,11 @@ jobs:
         run: npm install --omit=dev
 
       - name: Publish
-        run: npm publish --provenance --access public --tag alpha
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: git tag
         run: |
-          git tag v${{ env.GitVersion_SemVer }}-alpha
-          git push origin tag v${{ env.GitVersion_SemVer }}-alpha
+          git tag v${{ env.GitVersion_SemVer }}
+          git push origin tag v${{ env.GitVersion_SemVer }}
