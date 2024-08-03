@@ -29,4 +29,4 @@ $GITHUB_WORKSPACE/dist/main.js ${options[@]}
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
-diff --color=auto --strip-trailing-cr -uI "//.*" expected.d.css.ts ${prefix}test.d.css.ts
+diff --color=always --strip-trailing-cr -uI "//.*" expected.d.css.ts ${prefix}test.d.css.ts
