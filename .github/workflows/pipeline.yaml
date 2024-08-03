@@ -45,7 +45,6 @@ jobs:
 
   Test:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
-    needs: Build # Verify ci-build first
     defaults:
       run:
         shell: bash
@@ -79,27 +78,27 @@ jobs:
 
       - name: "Test 1: default case"
         run: |
-          scripts/test.sh foo "" "*.css"
+          scripts/test.sh foo "" "\"*.css\""
 
       #      - name: "Test 2: localsConvention, first position"
       #        if: success() || failure()
       #        run: |
-      #          scripts/test.sh casing/casing "" "--localsConvention camelCaseOnly *.css" casing/camelCaseOnly
+      #          scripts/test.sh casing/casing "" "--localsConvention camelCaseOnly \"*.css\"" casing/camelCaseOnly
       #
       #      - name: "Test 3: localsConvention, second position"
       #        if: success() || failure()
       #        run: |
-      #          scripts/test.sh casing/casing "" "*.css --localsConvention camelCaseOnly" casing/camelCaseOnly
+      #          scripts/test.sh casing/casing "" "\"*.css\" --localsConvention camelCaseOnly" casing/camelCaseOnly
       #
       #      - name: "Test 4: relative outdir"
       #        if: success() || failure()
       #        run: |
-      #          scripts/test.sh foo "" "--outdir generated *.css" "" generated/
+      #          scripts/test.sh foo "" "--outdir generated \"*.css\"" "" generated/
       #
       #      - name: "Test 5: absolute outdir"
       #        if: success() || failure()
       #        run: |
-      #          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
+      #          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated \"*.css\"" "" "$GITHUB_WORKSPACE"/generated/
       #
       #      - name: "Test 6: json file config"
       #        if: success() || failure()

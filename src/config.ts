@@ -62,10 +62,10 @@ const loaders: Loaders = {
 const configSearcher = lilconfig(name, { loaders, searchPlaces });
 
 /** Loads the css-typed configuration file. */
-export async function loadFileConfig(configPath: string | undefined) {
-	return (await (configPath
-		? configSearcher.load(configPath)
-		: configSearcher.search())) as CssTypedConfig | null;
+export function loadFileConfig(configPath: string | undefined) {
+	return (
+		configPath ? configSearcher.load(configPath) : configSearcher.search()
+	) as Promise<CssTypedConfig | null>;
 }
 
 type CssTypedConfig = OverrideProperties<

@@ -39,7 +39,7 @@ await new Command()
 		program,
 	) {
 		console.log();
-		console.log({ cliConfigPath, ...cliOptions, cliPattern });
+		console.log({ cliConfigPath, cliOptions, cliPattern });
 		console.log();
 
 		// Load file configuration first
