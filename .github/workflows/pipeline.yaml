@@ -101,10 +101,20 @@ jobs:
         run: |
           scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
 
-      - name: "Test 6: file config"
+      - name: "Test 6: json file config"
         if: success() || failure()
         run: |
-          scripts/test.sh foo example
+          scripts/test.sh foo csstypedrc.json
+
+      - name: "Test 7: yaml file config"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo csstypedrc.yaml "" "" generated/
+
+      - name: "Test 8: custom config path (and js file config)"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo custom-config-path.config.js "-c .config/custom-config-path.config.js"
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}

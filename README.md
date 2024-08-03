@@ -12,6 +12,7 @@ TypeScript declaration generator for CSS files.
 <summary><strong>Table of Contents</strong></summary>
 
 - [Usage](#usage)
+- [Options](#options)
 - [Recipes](#recipes)
 - [Motivation](#motivation)
 - [Contributing](#contributing)
@@ -69,9 +70,35 @@ echo '*.d.css.ts' >> .gitignore
 The following table lists the options `css-typed` supports.
 Also run `css-typed -h` on the command line.
 
-|      CLI option      |   Default    | Description                    |
-| :------------------: | :----------: | :----------------------------- |
-| `--localsConvention` | `dashesOnly` | Style of exported class names. |
+|      CLI option      |   Default    | Description                            |
+| :------------------: | :----------: | :------------------------------------- |
+|  `-c` or `--config`  |  Heuristics  | Custom path to the configuration file. |
+| `--localsConvention` | `dashesOnly` | Style of exported class names.         |
+
+### config
+
+`css-typed` supports loading options from a configuration file instead of using command line arguments.
+To load from a custom path, use the `-c` or `--config` option.
+By default, `css-typed` looks in the following locations.
+Extensionless "rc" files can have JSON or YAML format.
+
+- Package file: `css-typed` property in `package.json` or `package.yaml`
+- Root rc files: `.csstypedrc` with no extension or one of `json`, `yaml`, `yml`, `js`, `cjs`, or `mjs`
+- Config folder rc files: `.config/csstypedrc` with no extension or one of `json`, `yaml`, `yml`, `js`, `cjs`, or `mjs`
+- Root config files: `css-typed.config` with an extension of `js`, `cjs`, or `mjs`
+
+<details>
+<summary>Look under the hood</summary>
+
+Under the hood, `css-typed` uses [lilconfig] to load configuration files.
+It supports YAML files via [js-yaml].
+
+See [src/config.ts](src/config.ts) for the implementation.
+
+</details>
+
+[lilconfig]: https://www.npmjs.com/package/lilconfig
+[js-yaml]: https://www.npmjs.com/package/js-yaml
 
 ### localsConvention
 
@@ -89,11 +116,12 @@ The default matches CSS naming practices (`kebab-case`).
 
 > **IMPORTANT**
 >
-> Note that the non-`*Only` values MAY have TypeScript bugs.
+> Note that `camelCase` and `dashes` MAY have TypeScript bugs.
 > TypeScript 5.6 may help with the named exports for these.
 >
 > If you encounter a bug, please file an issue.
-> In the mean-time, consider using `camelCaseOnly` instead (or `dashesOnly` which is the default).
+> In the mean-time, consider using `camelCaseOnly` instead.
+> (Or `dashesOnly` which is the default.)
 
 ## Recipes
 
@@ -145,6 +173,7 @@ declare module "*.module.css" {
 Both depend on [css-modules-loader-core], which appears [abandoned][174].
 
 Therefore, I wrote my own (very basic) implementation.
+See [§Implementation details](#implementation-details) for more information.
 
 [typescript-plugin-css-modules]: https://www.npmjs.com/package/typescript-plugin-css-modules
 [typed-css-modules]: https://www.npmjs.com/package/typed-css-modules
@@ -161,7 +190,17 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md).
 This (very basic) implementation uses [glob] for file matching and [css-tree] for CSS parsing.
 It extracts CSS classes (`ClassSelector` in CSS Tree’s AST) and exports them as `string` constants (named exports).
 
+The CSS-file class name is modified for JS export according to the [localsConvention](#localsconvention) option.
+The implementation matches PostCSS.
+
 I chose CSS Tree after a brief search because it had a nice API, good documentation, and supported CSS nesting (a requirement for my original use case).
+
+`css-typed` uses [Commander.js][commander] for command line parsing and [lilconfig] for configuration file loading.
+
+The “brand” image/logo combines the public CSS 3 and TypeScript logos with a basic plus icon in between.
+See [css-typed.svg](images/css-typed.svg).
 
 [glob]: https://www.npmjs.com/package/glob
 [css-tree]: https://www.npmjs.com/package/css-tree
+[commander]: https://www.npmjs.com/package/commander
+[lilconfig]: https://www.npmjs.com/package/lilconfig

@@ -3,8 +3,8 @@
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1
 
-# $2 is the config file name, relative to `fixtures/config`. Defaults to $1.
-config=${2:$1}
+# $2 is the config file name, relative to `fixtures/config`. Defaults to $1.yaml.
+config=${2:-$1.yaml}
 
 # $3 is the options. Defaults to "".
 IFS=" " read -r -a options <<< "${2:-}"
@@ -18,7 +18,7 @@ prefix=${5:-}
 # Run from $RUNNER_TEMP for auto-cleanup.
 cp fixtures/${input}.css $RUNNER_TEMP/test.css
 cp fixtures/${output}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
-cp fixtures/config/${config}.yaml $RUNNER_TEMP/.config/csstypedrc.yaml 2> /dev/null
+cp fixtures/config/${config} $RUNNER_TEMP/.config/${config} 2> /dev/null
 pushd $RUNNER_TEMP > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).

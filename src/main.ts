@@ -6,10 +6,8 @@ import path from "node:path";
 
 import { Command, Option } from "@commander-js/extra-typings";
 import { glob } from "glob";
-import type { LilconfigResult } from "lilconfig";
-import { lilconfig } from "lilconfig";
-import type { OverrideProperties } from "type-fest";
 
+import { loadFileConfig } from "./config.ts";
 import { dtsPath, generateDeclaration } from "./logic.js";
 import type { Options } from "./options.ts";
 import { localsConventionChoices } from "./options.ts";
@@ -17,18 +15,12 @@ import { localsConventionChoices } from "./options.ts";
 declare let VERSION: string; // Defined by esbuild
 const version = VERSION;
 
-const configResult = (await lilconfig(`css-typed`, {
-	searchStrategy: `project`,
-}).search()) as OverrideProperties<
-	NonNullable<LilconfigResult>,
-	{ config?: Partial<Options & { pattern?: string }> }
-> | null;
-
 await new Command()
 	.name(`css-typed`)
 	.description(`TypeScript declaration generator for CSS files.`)
 	.version(version)
 	.argument(`[pattern]`, `Glob path for CSS files to target.`)
+	.option(`-c, --config <configFile>`, `Custom path to the configuration file.`)
 	.addOption(
 		new Option(
 			`--localsConvention <localsConvention>`,
@@ -41,9 +33,16 @@ await new Command()
 		`-o, --outdir <outDirectory>`,
 		`Root directory for generated CSS declaration files.`,
 	)
-	.action(async function (cliPattern, cliOptions, program) {
+	.action(async function (
+		cliPattern,
+		{ config: cliConfig, ...cliOptions },
+		program,
+	) {
+		const configResult = await loadFileConfig(cliConfig);
 		if (configResult?.config) {
-			console.debug(`Reading configuration from ${configResult.filepath}`);
+			console.debug(`Reading configuration from ${configResult.filepath}.`);
+		} else if (cliConfig) {
+			program.error(`Failed to parse ${cliConfig}.`);
 		}
 
 		// Remove pattern argument from file config, if present.
