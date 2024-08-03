@@ -20,10 +20,10 @@ await new Command()
 	.description(`TypeScript declaration generator for CSS files.`)
 	.version(version)
 	.argument(`[pattern]`, `Glob path for CSS files to target.`)
-	.option(`-c, --config <configFile>`, `Custom path to the configuration file.`)
+	.option(`-c, --config <file>`, `Custom path to the configuration file.`)
 	.addOption(
 		new Option(
-			`--localsConvention <localsConvention>`,
+			`--localsConvention <value>`,
 			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${version}#localsConvention`,
 		)
 			.choices(localsConventionChoices)
@@ -35,15 +35,23 @@ await new Command()
 	)
 	.action(async function (
 		cliPattern,
-		{ config: cliConfig, ...cliOptions },
+		{ config: cliConfigPath, ...cliOptions },
 		program,
 	) {
+		console.log();
+		console.log({ cliConfigPath, ...cliOptions, cliPattern });
+		console.log();
+
 		// Load file configuration first
-		const configResult = await loadFileConfig(cliConfig);
-		if (configResult?.config) {
-			console.debug(`Reading configuration from ${configResult.filepath}.`);
-		} else if (cliConfig) {
-			program.error(`Failed to parse ${cliConfig}.`);
+		const configResult = await loadFileConfig(cliConfigPath);
+		if (configResult?.filepath) {
+			// We loaded the file
+			console.debug(
+				`[debug] Reading configuration from ${configResult.filepath}.`,
+			);
+		} else if (cliConfigPath) {
+			// We did not load the file, but we expected to with `-c/--config`, so error
+			return program.error(`[error] Failed to parse ${cliConfigPath}.`);
 		}
 
 		// Remove pattern argument from file config, if present.
@@ -55,10 +63,8 @@ await new Command()
 		// Pattern is required. CLI overrides file config.
 		const pattern = cliPattern ?? filePattern;
 		if (!pattern) {
-			// Match commander error message exactly
-			console.error(configResult);
-			program.error(`error: missing required argument 'pattern'`);
-			return;
+			// Match commander error message
+			return program.error(`[error] Missing required argument 'pattern'`);
 		}
 
 		// Find the files and process each.
