@@ -91,11 +91,11 @@ jobs:
 
       - name: "Test 4: relative outdir"
         run: |
-          scripts/test.sh foo '--outdir generated' '' '' generated
+          scripts/test.sh foo '--outdir generated' '' '' generated/
 
       - name: "Test 5: absolute outdir"
         run: |
-          scripts/test.sh foo "-o $GITHUB_WORKSPACE/generated" '' '' "$GITHUB_WORKSPACE"/generated
+          scripts/test.sh foo "-o $GITHUB_WORKSPACE/generated" '' '' "$GITHUB_WORKSPACE"/generated/
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
