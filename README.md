@@ -4,7 +4,7 @@
 
 TypeScript declaration generator for CSS files.
 
-<img alt="css-typed logo" src="./css-typed.svg" width="400">
+<img alt="css-typed logo" src="images/css-typed.svg" width="400">
 
 </div>
 

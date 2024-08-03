@@ -1,0 +1,4 @@
+{
+	"compilerOptions": { "baseUrl": ".", "outDir": "./artifacts/tsc" },
+	"extends": "@connorjs/tsconfig/lib/tsconfig.json"
+}
