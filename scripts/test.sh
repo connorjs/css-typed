@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1
@@ -29,4 +28,4 @@ $GITHUB_WORKSPACE/dist/main.js ${beforeOpts[@]} "*.css" ${afterOpts[@]}
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
-diff --color=auto --strip-trailing-cr -uI '//.*' expected.d.css.ts ${prefix}test.d.css.ts
+diff --color=auto --strip-trailing-cr -uI "//.*" expected.d.css.ts ${prefix}test.d.css.ts
