@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -20,8 +21,11 @@ prefix=${5:-}
 # Run from $RUNNER_TEMP for auto-cleanup.
 cp fixtures/${input}.css $RUNNER_TEMP/test.css
 cp fixtures/${output}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+
+rm -rf "${RUNNER_TEMP:?}/.config"
 mkdir -p $RUNNER_TEMP/.config
 cp fixtures/config/${config} $RUNNER_TEMP/.config/${config} 2> /dev/null
+
 pushd $RUNNER_TEMP > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
