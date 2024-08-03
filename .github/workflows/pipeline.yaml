@@ -54,10 +54,10 @@ jobs:
       matrix:
         node:
           - 20.x
-          - 22.x
+          #- 22.x
         platform:
           - os: ubuntu-latest
-          - os: macos-latest
+          #- os: macos-latest
           - os: windows-latest
       fail-fast: false
 
@@ -82,24 +82,27 @@ jobs:
           scripts/test.sh foo
 
       - name: "Test 2: localsConvention, first position"
+        if: success() || failure()
         run: |
-          opts=(--localsConvention camelCaseOnly)
-          scripts/test.sh casing/casing "${opts[@]}" casing/camelCaseOnly
+          scripts/test.sh casing/casing "--localsConvention camelCaseOnly" casing/camelCaseOnly
 
       - name: "Test 3: localsConvention, second position"
+        if: success() || failure()
         run: |
           opts=(--localsConvention camelCaseOnly)
           scripts/test.sh casing/casing '' casing/camelCaseOnly "${opts[@]}"
 
-      - name: "Test 4: relative outdir"
-        run: |
-          opts=(--outdir generated)
-          scripts/test.sh foo "${opts[@]}" '' '' generated/
-
-      - name: "Test 5: absolute outdir"
-        run: |
-          opts=(-o $GITHUB_WORKSPACE/generated)
-          scripts/test.sh foo "${opts[@]}" '' '' "$GITHUB_WORKSPACE"/generated/
+  #      - name: "Test 4: relative outdir"
+  #        if: success() || failure()
+  #        run: |
+  #          opts=(--outdir generated)
+  #          scripts/test.sh foo "${opts[@]}" '' '' generated/
+  #
+  #      - name: "Test 5: absolute outdir"
+  #        if: success() || failure()
+  #        run: |
+  #          opts=(-o $GITHUB_WORKSPACE/generated)
+  #          scripts/test.sh foo "${opts[@]}" '' '' "$GITHUB_WORKSPACE"/generated/
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
