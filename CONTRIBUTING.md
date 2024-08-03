@@ -22,7 +22,7 @@ The [src](./src) directory contains the main and test sources.
 
 - [main.js](./src/main.js) represents the entry point (the CLI tool).
 - [generate-declaration.js](./src/generate-declaration.js) represents the unit-tested JS logic.
-- [fixtures](./src/fixtures) directory contains files for data-file-driven unit tests.
+- [fixtures](fixtures) directory contains files for data-file-driven unit tests.
 
 ## Expectations
 

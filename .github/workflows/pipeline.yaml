@@ -87,17 +87,17 @@ jobs:
 
       - name: "Test 1: Default case"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/foo.css $RUNNER_TEMP/foo.css
+          cp fixtures/foo.d.css.ts $RUNNER_TEMP/expected.d.css.ts
 
           cd $RUNNER_TEMP
           $GITHUB_WORKSPACE/dist/main.js '*.css'
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts casing.d.css.ts
+          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts foo.d.css.ts
 
       - name: "Test 2: localsConvention, second position"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/casing/casing.css $RUNNER_TEMP/casing.css
+          cp fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
 
           cd $RUNNER_TEMP
           $GITHUB_WORKSPACE/dist/main.js '*.css' --localsConvention camelCaseOnly
@@ -105,8 +105,8 @@ jobs:
 
       - name: "Test 3: localsConvention, first position"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/casing/casing.css $RUNNER_TEMP/casing.css
+          cp fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
 
           cd $RUNNER_TEMP
           $GITHUB_WORKSPACE/dist/main.js --localsConvention camelCaseOnly '*.css'
@@ -114,17 +114,27 @@ jobs:
 
       - name: "Test 4: relative outdir"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/foo.css $RUNNER_TEMP/foo.css
+          cp fixtures/foo.d.css.ts $RUNNER_TEMP/expected.d.css.ts
 
           cd $RUNNER_TEMP
           $GITHUB_WORKSPACE/dist/main.js '*.css' --outdir generated
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts generated/casing.d.css.ts
+          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts generated/foo.d.css.ts
 
       - name: "Test 5: absolute outdir"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/foo.css $RUNNER_TEMP/foo.css
+          cp fixtures/foo.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+
+          cd $RUNNER_TEMP
+          $GITHUB_WORKSPACE/dist/main.js '*.css' -o $GITHUB_WORKSPACE/generated
+          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts $GITHUB_WORKSPACE/generated/foo.d.css.ts
+
+      - name: "Test 6: cosmiconfig default"
+        run: |
+          cp fixtures/foo.css $RUNNER_TEMP/casing.css
+          cp fixtures/foo.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          cp fixtures/cosmiconfig/default.yaml $RUNNER_TEMP/csstyped.rc.yaml
 
           cd $RUNNER_TEMP
           $GITHUB_WORKSPACE/dist/main.js '*.css' -o $GITHUB_WORKSPACE/generated

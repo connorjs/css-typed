@@ -5,19 +5,30 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { Command, Option } from "@commander-js/extra-typings";
+import type { CosmiconfigResult } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import { glob } from "glob";
+import type { OverrideProperties } from "type-fest";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
+import type { Options } from "./options.ts";
 import { localsConventionChoices } from "./options.ts";
 
 declare let VERSION: string; // Defined by esbuild
 const version = VERSION;
 
+const cosmiconfigResult = (await cosmiconfig(`css-typed`, {
+	searchStrategy: `project`,
+}).search()) as OverrideProperties<
+	NonNullable<CosmiconfigResult>,
+	{ config?: Partial<Options & { pattern?: string }> }
+> | null;
+
 await new Command()
 	.name(`css-typed`)
 	.description(`TypeScript declaration generator for CSS files.`)
 	.version(version)
-	.argument(`<pattern>`, `Glob path for CSS files to target.`)
+	.argument(`[pattern]`, `Glob path for CSS files to target.`)
 	.addOption(
 		new Option(
 			`--localsConvention <localsConvention>`,
@@ -30,7 +41,22 @@ await new Command()
 		`-o, --outdir <outDirectory>`,
 		`Root directory for generated CSS declaration files.`,
 	)
-	.action(async function (pattern, options) {
+	.action(async function (cliPattern, cliOptions, program) {
+		// Examine cosmiconfig file
+		if (cosmiconfigResult?.config) {
+			console.debug(`Reading configuration from ${cosmiconfigResult.filepath}`);
+		}
+
+		// Resolve options from file config and CLI. CLI overrides file.
+		const options: Options = { ...cosmiconfigResult?.config, ...cliOptions };
+
+		// Pattern is required
+		const pattern = cliPattern ?? cosmiconfigResult?.config?.pattern;
+		if (!pattern) {
+			return program.error(`missing required argument 'pattern'`);
+		}
+
+		// Find the files and process each
 		const files = await glob(pattern);
 
 		const time = new Date().toISOString();
