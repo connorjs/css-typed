@@ -94,7 +94,7 @@ jobs:
           diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCaseOnly.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
           ./dist/main.js "$RUNNER_TEMP/*.css" --outdir gen1
-          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/dashesOnly.d.css.ts "$RUNNER_TEMP/gen1/casing.d.css.ts"
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/dashesOnly.d.css.ts "gen1/casing.d.css.ts"
 
           ./dist/main.js "$RUNNER_TEMP/*.css" -o $RUNNER_TEMP/gen2
           diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/dashesOnly.d.css.ts "$RUNNER_TEMP/gen2/casing.d.css.ts"
