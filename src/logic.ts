@@ -165,5 +165,5 @@ export function dtsPath(stylesheetPath: string, outdir: string | undefined) {
 		directory = originalDirectory;
 	}
 
-	return path.join(directory, `${name}.d${ext}.ts`);
+	return path.join(path.resolve(directory), `${name}.d${ext}.ts`);
 }
