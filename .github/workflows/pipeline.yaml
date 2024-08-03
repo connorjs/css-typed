@@ -27,7 +27,9 @@ jobs:
         id: GitVersion
         uses: gittools/actions/gitversion/execute@v2.0.1
         with:
-          useConfigFile: true
+          overrideConfig: |
+            workflow=GitHubFlow/v1
+            mode=ContinuousDeployment
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -88,7 +90,7 @@ jobs:
           node dist/main.js "$RUNNER_TEMP/*.css" --localsConvention camelCaseOnly
           diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCaseOnly.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
-          node dist/main.js --localsConvention camelCaseOnly "$RUNNER_TEMP/*.css" 
+          node dist/main.js --localsConvention camelCaseOnly "$RUNNER_TEMP/*.css"
           diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCaseOnly.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
   Publish:

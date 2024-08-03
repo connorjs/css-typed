@@ -13,7 +13,7 @@ const result = await build({
 		[`process.env.NODE_ENV`]: `"production"`,
 		VERSION: `"${version}"`,
 	},
-	entryPoints: [`src/main.js`],
+	entryPoints: [`src/main.ts`],
 	format: `esm`,
 	metafile: true,
 	minify: true,

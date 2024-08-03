@@ -5,27 +5,32 @@ import path from "node:path";
 import { parse as parseCss, walk } from "css-tree";
 import camelCase from "lodash.camelcase";
 
-/* globals process -- Node/CLI tool */
+import type { LocalsConvention, Options } from "./options.ts";
 
 /**
  * Generates TypeScript declaration file for the stylesheet file at the given
  * `path`. Includes the given `time` in the generated comment.
  *
- * @param stylesheetPath {string} - Path to stylesheet file.
- * @param time {string} - Timestamp string to include in generated comment.
- * @param options {{localsConvention: "camelCase"|"camelCaseOnly"|"dashes"|"dashesOnly"|"none"}} - Options object.
- * @returns {Promise<string | undefined>} TypeScript declaration file content or
- *   `undefined` if no declarations to write.
+ * @param stylesheetPath - Path to stylesheet file.
+ * @param time - Timestamp string to include in generated comment.
+ * @param options - Options object.
+ * @returns TypeScript declaration file content or `undefined` if no declarations to write.
  */
-export async function generateDeclaration(stylesheetPath, time, options = {}) {
+export async function generateDeclaration(
+	stylesheetPath: string,
+	time: string,
+	options: Options = {},
+) {
 	// Handle case where the file got deleted by the time we got here
-	if (!existsSync(stylesheetPath)) return undefined;
+	if (!existsSync(stylesheetPath)) {
+		return undefined;
+	}
 
 	const css = await readFile(stylesheetPath, `utf8`);
 
 	const ast = parseCss(css, { filename: stylesheetPath });
-	const visitedNames = new Set();
-	const exportedNames = new Map();
+	const visitedNames = new Set<string>();
+	const exportedNames = new Map<string, string | undefined>();
 	let hasAtLeastOneInvalidTsExportName = false;
 	walk(ast, (node) => {
 		if (node.type === `ClassSelector`) {
@@ -71,10 +76,10 @@ export async function generateDeclaration(stylesheetPath, time, options = {}) {
 }
 
 function printTypeScriptDeclarationFile(
-	stylesheetPath,
-	time,
-	exportedNames,
-	hasAtLeastOneInvalidTsExportName,
+	stylesheetPath: string,
+	time: string,
+	exportedNames: Map<string, string | undefined>,
+	hasAtLeastOneInvalidTsExportName: boolean,
 ) {
 	const pathRelativeToCwd = path.relative(process.cwd(), stylesheetPath);
 
@@ -110,10 +115,13 @@ function printTypeScriptDeclarationFile(
  * Handles renaming class names with `localsConvention` option.
  *
  * @param name {string} - Class name.
- * @param localsConvention {"camelCase"|"camelCaseOnly"|"dashes"|"dashesOnly"|"none"} - Style of exported class names.
- * @return {string[]} - Names to write. (Could return the original and modified name.)
+ * @param localsConvention - Style of exported class names.
+ * @return Names to write. (Could return the original and modified name.)
  */
-function handleLocalsConvention(name, localsConvention) {
+function handleLocalsConvention(
+	name: string,
+	localsConvention: LocalsConvention | undefined,
+): [string] | [string, string] {
 	switch (localsConvention) {
 		case `camelCase`: {
 			return [name, camelCase(name)];
@@ -133,18 +141,20 @@ function handleLocalsConvention(name, localsConvention) {
 	}
 }
 
-function hasDashes(/*string*/ s) {
+function hasDashes(s: string) {
 	return s.includes(`-`);
 }
 
 // Modifies postcss-modules `dashesCamelCase` function to use `replaceAll` given
 // https://github.com/madyankin/postcss-modules/blob/master/src/localsConvention.js
 // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-string-replace-all.md
-function dashesCamelCase(/*string*/ s) {
-	return s.replaceAll(/-+(\w)/g, (_, firstLetter) => firstLetter.toUpperCase());
+function dashesCamelCase(s: string) {
+	return s.replaceAll(/-+(\w)/g, (_, firstLetter: string) =>
+		firstLetter.toUpperCase(),
+	);
 }
 
-export function dtsPath(/*string*/ stylesheetPath) {
+export function dtsPath(stylesheetPath: string) {
 	const { dir, name, ext } = path.parse(stylesheetPath);
 	return path.join(dir, `${name}.d${ext}.ts`);
 }

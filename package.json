@@ -24,7 +24,7 @@
 	},
 	"type": "module",
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"bin": {
 		"css-typed": "dist/main.js"
@@ -34,13 +34,14 @@
 	],
 	"scripts": {
 		"build": "node scripts/build.js",
-		"ci-build": "npm-run-all -l -p build eslint prettier test",
+		"ci-build": "npm-run-all -l -p eslint prettier test tsc -s build",
 		"eslint": "eslint --format pretty .",
 		"eslint:fix": "eslint --format pretty . --fix",
 		"prepublishOnly": "npm run build",
 		"prettier": "prettier --check .",
 		"prettier:fix": "prettier --write .",
-		"test": "vitest run"
+		"test": "vitest run",
+		"tsc": "tsc"
 	},
 	"engineStrict": true,
 	"dependencies": {
@@ -51,15 +52,19 @@
 		"lodash.camelcase": "^4.3.0"
 	},
 	"devDependencies": {
+		"@connorjs/tsconfig": "~0.3.0",
 		"@types/css-tree": "^2.3.8",
+		"@types/lodash.camelcase": "^4.3.9",
+		"@types/node": "^20.14.14",
 		"esbuild": "~0.23.0",
-		"eslint-config-connorjs": "^1.0.0-beta.2",
+		"eslint-config-connorjs": "^1.0.0",
 		"husky": "^9.1.4",
 		"is-ci": "^3.0.1",
-		"lint-staged": "^15.2.7",
+		"lint-staged": "^15.2.8",
 		"npm-run-all": "^4.1.5",
 		"prettier": "^3.3.3",
-		"vitest": "^2.0.4"
+		"typescript": "^5.5.4",
+		"vitest": "^2.0.5"
 	},
 	"main": "dist/main.js"
 }
