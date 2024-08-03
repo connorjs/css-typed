@@ -83,19 +83,23 @@ jobs:
 
       - name: "Test 2: localsConvention, first position"
         run: |
-          scripts/test.sh casing/casing '--localsConvention camelCaseOnly' casing/camelCaseOnly
+          opts=(--localsConvention camelCaseOnly)
+          scripts/test.sh casing/casing "opts[@]" casing/camelCaseOnly
 
       - name: "Test 3: localsConvention, second position"
         run: |
-          scripts/test.sh casing/casing '' casing/camelCaseOnly '--localsConvention camelCaseOnly'
+          opts=(--localsConvention camelCaseOnly)
+          scripts/test.sh casing/casing '' casing/camelCaseOnly "opts[@]"
 
       - name: "Test 4: relative outdir"
         run: |
-          scripts/test.sh foo '--outdir generated' '' '' generated/
+          opts=(--outdir generated)
+          scripts/test.sh foo "opts[@]" '' '' generated/
 
       - name: "Test 5: absolute outdir"
         run: |
-          scripts/test.sh foo "-o $GITHUB_WORKSPACE/generated" '' '' "$GITHUB_WORKSPACE"/generated/
+          opts=(-o $GITHUB_WORKSPACE/generated)
+          scripts/test.sh foo "opts[@]" '' '' "$GITHUB_WORKSPACE"/generated/
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
