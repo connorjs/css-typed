@@ -79,7 +79,8 @@ jobs:
 
       - name: "Test 1: default case"
         run: |
-          scripts/test.sh foo "" "*.css"
+          scripts/test.sh foo ""
+        # Intentional fail
 
       - name: "Test 2: localsConvention, first position"
         if: success() || failure()

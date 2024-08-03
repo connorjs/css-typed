@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1
@@ -18,7 +20,7 @@ prefix=${5:-}
 # Run from $RUNNER_TEMP for auto-cleanup.
 cp fixtures/${input}.css $RUNNER_TEMP/test.css
 cp fixtures/${output}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
-mkdir $RUNNER_TEMP/.config
+mkdir -p $RUNNER_TEMP/.config
 cp fixtures/config/${config} $RUNNER_TEMP/.config/${config} 2> /dev/null
 pushd $RUNNER_TEMP > /dev/null || exit
 
