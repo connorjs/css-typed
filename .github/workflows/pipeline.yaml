@@ -79,7 +79,7 @@ jobs:
 
       - name: "Test 1: default case"
         run: |
-          scripts/test.sh foo
+          scripts/test.sh foo "" "*.css"
 
       - name: "Test 2: localsConvention, first position"
         if: success() || failure()

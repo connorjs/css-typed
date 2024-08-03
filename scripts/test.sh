@@ -7,10 +7,10 @@ input=$1
 config=${2:-$1.yaml}
 
 # $3 is the options. Defaults to "".
-IFS=" " read -r -a options <<< "${2:-}"
+IFS=" " read -r -a options <<< "${3:-}"
 
 # $4 is the output name, relative to `fixtures`. Defaults to $1.
-output=${3:-$1}
+output=${4:-$1}
 
 # $5 is the path prefix for output. Defaults to "".
 prefix=${5:-}

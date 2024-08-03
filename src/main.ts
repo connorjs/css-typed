@@ -54,7 +54,8 @@ await new Command()
 		// Pattern is required. CLI overrides file config.
 		const pattern = cliPattern ?? filePattern;
 		if (!pattern) {
-			return program.error(`missing required argument 'pattern'`);
+			// Match commander error message exactly
+			return program.error(`error: missing required argument 'pattern'`);
 		}
 
 		// Find the files and process each.
