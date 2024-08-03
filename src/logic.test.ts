@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import * as process from "node:process";
 
 import { describe, expect, it } from "vitest";
 
@@ -37,13 +38,21 @@ describe(`css-typed`, () => {
 		});
 	});
 
+	const cwd = process.cwd();
+	const cwdParent = path.resolve(cwd, `..`);
 	describe(`dtsPath`, () => {
 		it.each([
-			[`foo.css`, `foo.d.css.ts`],
-			[`foo.module.css`, `foo.module.d.css.ts`],
-		])(`%s should create file %s`, (input, expected) => {
-			expect(dtsPath(input)).toStrictEqual(expected);
-		});
+			[`src/foo.css`, `${cwd}/src/foo.d.css.ts`, undefined],
+			[`src/foo.module.css`, `${cwd}/src/foo.module.d.css.ts`, ``],
+			[`src/foo.css`, `${cwd}/generated/src/foo.d.css.ts`, `generated`],
+			[`src/foo.css`, `/absolute/src/foo.d.css.ts`, `/absolute`],
+			[`src/foo.css`, `${cwdParent}/relative/src/foo.d.css.ts`, `../relative`],
+		])(
+			`[%s] should create file [%s] with outdir [%s]`,
+			(input, expected, outdir) => {
+				expect(path.join(...dtsPath(input, outdir))).toStrictEqual(expected);
+			},
+		);
 	});
 });
 
