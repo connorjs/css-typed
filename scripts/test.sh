@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-
-set -euo pipefail
-IFS=$'\n\t'
+set -x
 
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1
