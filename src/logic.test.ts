@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import path from "node:path";
 import * as process from "node:process";
 
@@ -31,10 +30,8 @@ describe(`css-typed`, () => {
 			const inputPath = fixtureFile(inputFilename);
 			const outputPath = fixtureFile(outputFilename);
 
-			const expected = readFileSync(outputPath, { encoding: `utf8` });
-
 			const generated = await generateDeclaration(inputPath, `$TIME`, options);
-			expect(generated).toStrictEqual(expected);
+			await expect(generated).toMatchFileSnapshot(outputPath);
 		});
 	});
 
@@ -57,5 +54,5 @@ describe(`css-typed`, () => {
 });
 
 function fixtureFile(filename: string) {
-	return path.join(import.meta.dirname, `fixtures`, filename);
+	return path.join(import.meta.dirname, `..`, `fixtures`, filename);
 }

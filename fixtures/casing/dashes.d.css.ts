@@ -1,13 +1,15 @@
-// Generated from `src/fixtures/casing/casing.css` by css-typed at $TIME
+// Generated from `fixtures/casing/casing.css` by css-typed at $TIME
 
 const lowercase: string;
 const UPPERCASE: string;
 const camelCase: string;
 const PascalCase: string;
 const _kebabcase: string;
+const kebabCase: string;
 const snake_case: string;
 const SCREAM_CASE: string;
 const _TRAINCASE: string;
+const TRAINCASE: string;
 
 export = {
 	lowercase,
@@ -15,7 +17,9 @@ export = {
 	camelCase,
 	PascalCase,
 	"kebab-case": _kebabcase,
+	kebabCase,
 	snake_case,
 	SCREAM_CASE,
 	"TRAIN-CASE": _TRAINCASE,
+	TRAINCASE,
 };
