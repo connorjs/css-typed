@@ -80,40 +80,40 @@ jobs:
         run: |
           scripts/test.sh foo "" '*.css'
 
-      #      - name: "Test 2: localsConvention, first position"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh casing/casing "" "--localsConvention camelCaseOnly \"*.css\"" casing/camelCaseOnly
-      #
-      #      - name: "Test 3: localsConvention, second position"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh casing/casing "" "\"*.css\" --localsConvention camelCaseOnly" casing/camelCaseOnly
-      #
-      #      - name: "Test 4: relative outdir"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh foo "" "--outdir generated \"*.css\"" "" generated/
-      #
-      #      - name: "Test 5: absolute outdir"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated \"*.css\"" "" "$GITHUB_WORKSPACE"/generated/
-      #
-      #      - name: "Test 6: json file config"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh foo csstypedrc.json
-      #
-      #      - name: "Test 7: yaml file config"
-      #        if: success() || failure()
-      #        run: |
-      #          scripts/test.sh foo csstypedrc.yaml "" "" generated/
+      - name: "Test 2: localsConvention, first position"
+        if: success() || failure()
+        run: |
+          scripts/test.sh casing/casing "" "--localsConvention camelCaseOnly \"*.css\"" casing/camelCaseOnly
+
+      - name: "Test 3: localsConvention, second position"
+        if: success() || failure()
+        run: |
+          scripts/test.sh casing/casing "" "\"*.css\" --localsConvention camelCaseOnly" casing/camelCaseOnly
+
+      - name: "Test 4: relative outdir"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo "" "--outdir generated \"*.css\"" "" generated/
+
+      - name: "Test 5: absolute outdir"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated \"*.css\"" "" "$GITHUB_WORKSPACE"/generated/
+
+      - name: "Test 6: json file config"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo csstypedrc.json
+
+      - name: "Test 7: yaml file config"
+        if: success() || failure()
+        run: |
+          scripts/test.sh foo csstypedrc.yaml "" "" generated/
 
       - name: "Test 8: custom config path (and js file config)"
         if: success() || failure()
         run: |
-          scripts/test.sh foo custom-config-path.config.js "-c .config/custom-config-path.config.js"
+          scripts/test.sh foo custom-config-path.config.mjs "-c .config/custom-config-path.config.mjs"
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}

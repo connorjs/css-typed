@@ -38,10 +38,6 @@ await new Command()
 		{ config: cliConfigPath, ...cliOptions },
 		program,
 	) {
-		console.log();
-		console.log({ cliConfigPath, cliOptions, cliPattern });
-		console.log();
-
 		// Load file configuration first
 		const configResult = await loadFileConfig(cliConfigPath);
 		if (configResult?.filepath) {
