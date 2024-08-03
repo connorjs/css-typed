@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
 
 import { Command, Option } from "@commander-js/extra-typings";
 import { glob } from "glob";
@@ -55,7 +57,15 @@ async function writeDeclarationFile(
 	outdir: string | undefined,
 	ts: string | undefined,
 ) {
-	if (!ts) return undefined;
-	await writeFile(dtsPath(file, outdir), ts, `utf8`);
-	return undefined;
+	if (!ts) {
+		return undefined;
+	}
+
+	const [directoryToWrite, fileToWrite] = dtsPath(file, outdir);
+	if (!existsSync(directoryToWrite)) {
+		await mkdir(directoryToWrite, { recursive: true });
+	}
+
+	const pathToWrite = path.join(directoryToWrite, fileToWrite);
+	await writeFile(pathToWrite, ts, { encoding: `utf8` });
 }

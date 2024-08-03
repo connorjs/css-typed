@@ -154,7 +154,10 @@ function dashesCamelCase(s: string) {
 	);
 }
 
-export function dtsPath(stylesheetPath: string, outdir: string | undefined) {
+export function dtsPath(
+	stylesheetPath: string,
+	outdir: string | undefined,
+): [string, string] {
 	const { dir: originalDirectory, name, ext } = path.parse(stylesheetPath);
 
 	let directory;
@@ -165,5 +168,5 @@ export function dtsPath(stylesheetPath: string, outdir: string | undefined) {
 		directory = originalDirectory;
 	}
 
-	return path.join(path.resolve(directory), `${name}.d${ext}.ts`);
+	return [path.resolve(directory), `${name}.d${ext}.ts`];
 }

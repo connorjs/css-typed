@@ -50,7 +50,7 @@ describe(`css-typed`, () => {
 		])(
 			`[%s] should create file [%s] with outdir [%s]`,
 			(input, expected, outdir) => {
-				expect(dtsPath(input, outdir)).toStrictEqual(expected);
+				expect(path.join(...dtsPath(input, outdir))).toStrictEqual(expected);
 			},
 		);
 	});
