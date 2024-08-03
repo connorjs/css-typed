@@ -5,9 +5,9 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { Command, Option } from "@commander-js/extra-typings";
-import type { CosmiconfigResult } from "cosmiconfig";
-import { cosmiconfig } from "cosmiconfig";
 import { glob } from "glob";
+import type { LilconfigResult } from "lilconfig";
+import { lilconfig } from "lilconfig";
 import type { OverrideProperties } from "type-fest";
 
 import { dtsPath, generateDeclaration } from "./logic.js";
@@ -17,10 +17,10 @@ import { localsConventionChoices } from "./options.ts";
 declare let VERSION: string; // Defined by esbuild
 const version = VERSION;
 
-const cosmiconfigResult = (await cosmiconfig(`css-typed`, {
+const configResult = (await lilconfig(`css-typed`, {
 	searchStrategy: `project`,
 }).search()) as OverrideProperties<
-	NonNullable<CosmiconfigResult>,
+	NonNullable<LilconfigResult>,
 	{ config?: Partial<Options & { pattern?: string }> }
 > | null;
 
@@ -42,21 +42,23 @@ await new Command()
 		`Root directory for generated CSS declaration files.`,
 	)
 	.action(async function (cliPattern, cliOptions, program) {
-		// Examine cosmiconfig file
-		if (cosmiconfigResult?.config) {
-			console.debug(`Reading configuration from ${cosmiconfigResult.filepath}`);
+		if (configResult?.config) {
+			console.debug(`Reading configuration from ${configResult.filepath}`);
 		}
 
-		// Resolve options from file config and CLI. CLI overrides file.
-		const options: Options = { ...cosmiconfigResult?.config, ...cliOptions };
+		// Remove pattern argument from file config, if present.
+		const { pattern: filePattern, ...fileConfig } = configResult?.config ?? {};
 
-		// Pattern is required
-		const pattern = cliPattern ?? cosmiconfigResult?.config?.pattern;
+		// Resolve options from file config and CLI. CLI overrides file config.
+		const options: Options = { ...fileConfig, ...cliOptions };
+
+		// Pattern is required. CLI overrides file config.
+		const pattern = cliPattern ?? filePattern;
 		if (!pattern) {
 			return program.error(`missing required argument 'pattern'`);
 		}
 
-		// Find the files and process each
+		// Find the files and process each.
 		const files = await glob(pattern);
 
 		const time = new Date().toISOString();
