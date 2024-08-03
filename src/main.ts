@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { writeFile } from "node:fs/promises";
 
 import { Command, Option } from "@commander-js/extra-typings";
