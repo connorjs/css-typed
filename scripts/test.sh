@@ -15,8 +15,8 @@ pushd "$RUNNER_TEMP" > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
 # But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-# shellcheck disable=SC2086
-"$GITHUB_WORKSPACE"/dist/main.js ${2:-} '*.css' ${4:-}
+echo "css-typed ${2:-} '*.css' ${4:-}"
+eval "$GITHUB_WORKSPACE/dist/main.js ${2:-} '*.css' ${4:-}"
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
