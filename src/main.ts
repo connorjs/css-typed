@@ -38,6 +38,7 @@ await new Command()
 		{ config: cliConfig, ...cliOptions },
 		program,
 	) {
+		// Load file configuration first
 		const configResult = await loadFileConfig(cliConfig);
 		if (configResult?.config) {
 			console.debug(`Reading configuration from ${configResult.filepath}.`);
@@ -55,7 +56,9 @@ await new Command()
 		const pattern = cliPattern ?? filePattern;
 		if (!pattern) {
 			// Match commander error message exactly
-			return program.error(`error: missing required argument 'pattern'`);
+			console.error(configResult);
+			program.error(`error: missing required argument 'pattern'`);
+			return;
 		}
 
 		// Find the files and process each.
