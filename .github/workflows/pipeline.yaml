@@ -77,58 +77,29 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Run tests
-      #
-      # - Run from $RUNNER_TEMP for auto-cleanup.
-      # - `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
-      #   But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-      # - Use `diff` to compare the files.
-      #   Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
-
       - name: "Test 1: Default case"
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          scripts/test.sh foo
 
-          cd $RUNNER_TEMP
-          $GITHUB_WORKSPACE/dist/main.js '*.css'
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts casing.d.css.ts
-
-      - name: "Test 2: localsConvention, second position"
+      - name: "Test 2: localsConvention, first position"
+        if: success() || failure()
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+          scripts/test.sh casing/casing "--localsConvention camelCaseOnly" casing/camelCaseOnly
 
-          cd $RUNNER_TEMP
-          $GITHUB_WORKSPACE/dist/main.js '*.css' --localsConvention camelCaseOnly
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts casing.d.css.ts
-
-      - name: "Test 3: localsConvention, first position"
+      - name: "Test 3: localsConvention, second position"
+        if: success() || failure()
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/camelCaseOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
-
-          cd $RUNNER_TEMP
-          $GITHUB_WORKSPACE/dist/main.js --localsConvention camelCaseOnly '*.css'
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts casing.d.css.ts
+          scripts/test.sh casing/casing "" casing/camelCaseOnly "--localsConvention camelCaseOnly"
 
       - name: "Test 4: relative outdir"
+        if: success() || failure()
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
-
-          cd $RUNNER_TEMP
-          $GITHUB_WORKSPACE/dist/main.js '*.css' --outdir generated
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts generated/casing.d.css.ts
+          scripts/test.sh foo "--outdir generated" "" "" generated/
 
       - name: "Test 5: absolute outdir"
+        if: success() || failure()
         run: |
-          cp src/fixtures/casing/casing.css $RUNNER_TEMP/casing.css
-          cp src/fixtures/casing/dashesOnly.d.css.ts $RUNNER_TEMP/expected.d.css.ts
-
-          cd $RUNNER_TEMP
-          $GITHUB_WORKSPACE/dist/main.js '*.css' -o $GITHUB_WORKSPACE/generated
-          diff --strip-trailing-cr -uI '//.*' expected.d.css.ts $GITHUB_WORKSPACE/generated/casing.d.css.ts
+          scripts/test.sh foo "-o $GITHUB_WORKSPACE/generated" "" "" "$GITHUB_WORKSPACE"/generated/
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
