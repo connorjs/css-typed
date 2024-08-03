@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -ex
 
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1

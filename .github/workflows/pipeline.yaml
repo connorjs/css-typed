@@ -57,7 +57,7 @@ jobs:
         platform:
           - os: ubuntu-latest
           #- os: macos-latest
-          #- os: windows-latest
+          - os: windows-latest
       fail-fast: false
 
     steps:
@@ -78,7 +78,7 @@ jobs:
 
       - name: "Test 1: default case"
         run: |
-          scripts/test.sh foo "" "\"*.css\""
+          scripts/test.sh foo "" '*.css'
 
       #      - name: "Test 2: localsConvention, first position"
       #        if: success() || failure()
