@@ -6,17 +6,18 @@ import { glob } from "glob";
 import { dtsPath, generateDeclaration } from "./logic.js";
 import { localsConventionChoices } from "./options.ts";
 
-declare let VERSION: string; // Replaced by esbuild
+declare let VERSION: string; // Defined by esbuild
+const version = VERSION;
 
 await new Command()
 	.name(`css-typed`)
 	.description(`TypeScript declaration generator for CSS files.`)
-	.version(VERSION)
+	.version(version)
 	.argument(`<pattern>`, `Glob path for CSS files to target.`)
 	.addOption(
 		new Option(
 			`--localsConvention <localsConvention>`,
-			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${VERSION}#localsConvention`,
+			`Style of exported classnames. See https://github.com/connorjs/css-typed/tree/v${version}#localsConvention`,
 		)
 			.choices(localsConventionChoices)
 			.default(`dashesOnly` as const),
