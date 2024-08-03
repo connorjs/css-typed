@@ -39,10 +39,11 @@ describe(`css-typed`, () => {
 
 	describe(`dtsPath`, () => {
 		it.each([
-			[`foo.css`, `foo.d.css.ts`],
-			[`foo.module.css`, `foo.module.d.css.ts`],
-		])(`%s should create file %s`, (input, expected) => {
-			expect(dtsPath(input)).toStrictEqual(expected);
+			[`foo.css`, undefined, `foo.d.css.ts`],
+			[`foo.module.css`, undefined, `foo.module.d.css.ts`],
+			[`src/bar/foo.css`, `generated`, `generated/src/bar/foo.d.css.ts`],
+		])(`%s should create file %s`, (input, outdir, expected) => {
+			expect(dtsPath(input, outdir)).toStrictEqual(expected);
 		});
 	});
 });

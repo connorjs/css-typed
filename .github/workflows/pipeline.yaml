@@ -93,6 +93,9 @@ jobs:
           node dist/main.js --localsConvention camelCaseOnly "$RUNNER_TEMP/*.css"
           diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/camelCaseOnly.d.css.ts "$RUNNER_TEMP/casing.d.css.ts"
 
+          node dist/main.js "$RUNNER_TEMP/*.css" -o "$RUNNER_TEMP/generated"
+          diff --strip-trailing-cr -uI '//.*' src/fixtures/casing/dashesOnly.d.css.ts "$RUNNER_TEMP/generated/casing.d.css.ts"
+
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: Publish

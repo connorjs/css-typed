@@ -22,6 +22,10 @@ await new Command()
 			.choices(localsConventionChoices)
 			.default(`dashesOnly` as const),
 	)
+	.option(
+		`-o, --outdir <outDirectory>`,
+		`Root directory for generated CSS declaration files.`,
+	)
 	.action(async function (pattern, options) {
 		const files = await glob(pattern);
 
@@ -29,7 +33,7 @@ await new Command()
 		await Promise.all(
 			files.map((file) =>
 				generateDeclaration(file, time, options).then((ts) =>
-					writeDeclarationFile(file, ts),
+					writeDeclarationFile(file, options.outdir, ts),
 				),
 			),
 		);
@@ -39,12 +43,17 @@ await new Command()
 /**
  * Writes the TypeScript declaration content to file. Handles the output path.
  *
- * @param path - Path to the original stylesheet file. NOT the path to write.
+ * @param file - Path to the original stylesheet file. NOT the path to write.
+ * @param outdir - Output directory to which to write.
  * @param ts - The TypeScript declaration content to write.
  * @returns Empty promise indicating when writing has completed.
  */
-async function writeDeclarationFile(path: string, ts: string | undefined) {
+async function writeDeclarationFile(
+	file: string,
+	outdir: string | undefined,
+	ts: string | undefined,
+) {
 	if (!ts) return undefined;
-	await writeFile(dtsPath(path), ts, `utf8`);
+	await writeFile(dtsPath(file, outdir), ts, `utf8`);
 	return undefined;
 }
