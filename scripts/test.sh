@@ -9,15 +9,14 @@ IFS=$'\n\t'
 # $5 is the path prefix for output. Defaults to "".
 
 # Run from $RUNNER_TEMP for auto-cleanup.
-cp fixtures/"$1".css "$RUNNER_TEMP"/test.css
-cp fixtures/"${3:-$1}".d.css.ts "$RUNNER_TEMP"/expected.d.css.ts
-pushd "$RUNNER_TEMP" > /dev/null || exit
+cp fixtures/$1.css $RUNNER_TEMP/test.css
+cp fixtures/${3:-$1}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+pushd $RUNNER_TEMP > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
 # But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-args="${2:-} \"*.css\" ${4:-}"
-echo "css-typed $args"
-eval "$GITHUB_WORKSPACE/dist/main.js $args"
+echo "css-typed ${2:-} \"*.css\" ${4:-}"
+$GITHUB_WORKSPACE/dist/main.js ${2:-} "*.css" ${4:-}
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
