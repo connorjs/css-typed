@@ -21,8 +21,10 @@ cp fixtures/${input}.css $RUNNER_TEMP/test.css
 cp fixtures/${output}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
 
 rm -rf "${RUNNER_TEMP:?}/.config"
-mkdir -p $RUNNER_TEMP/.config
-cp fixtures/config/${config} $RUNNER_TEMP/.config/${config} 2> /dev/null
+if [ -f fixtures/config/${config} ]; then
+	mkdir -p $RUNNER_TEMP/.config
+	cp fixtures/config/${config} $RUNNER_TEMP/.config/${config}
+fi
 
 pushd $RUNNER_TEMP > /dev/null || exit
 
