@@ -78,22 +78,22 @@ jobs:
 
       - name: "Test 1: default case"
         run: |
-          scripts/test.sh foo "" '*.css'
+          scripts/test.sh foo '' '*.css'
 
       - name: "Test 2: localsConvention, first position"
         if: success() || failure()
         run: |
-          scripts/test.sh casing/casing "" "--localsConvention camelCaseOnly \"*.css\"" casing/camelCaseOnly
+          scripts/test.sh casing/casing '' '--localsConvention camelCaseOnly *.css' casing/camelCaseOnly
 
       - name: "Test 3: localsConvention, second position"
         if: success() || failure()
         run: |
-          scripts/test.sh casing/casing "" "\"*.css\" --localsConvention camelCaseOnly" casing/camelCaseOnly
+          scripts/test.sh casing/casing '' '*.css --localsConvention camelCaseOnly' casing/camelCaseOnly
 
       - name: "Test 4: relative outdir"
         if: success() || failure()
         run: |
-          scripts/test.sh foo "" "--outdir generated \"*.css\"" "" generated/
+          scripts/test.sh foo '' '--outdir generated *.css' '' generated/
 
       - name: "Test 5: absolute outdir"
         if: success() || failure()
@@ -108,12 +108,12 @@ jobs:
       - name: "Test 7: yaml file config"
         if: success() || failure()
         run: |
-          scripts/test.sh foo csstypedrc.yaml "" "" generated/
+          scripts/test.sh foo csstypedrc.yaml '' '' generated/
 
       - name: "Test 8: custom config path (and js file config)"
         if: success() || failure()
         run: |
-          scripts/test.sh foo custom-config-path.config.mjs "-c .config/custom-config-path.config.mjs"
+          scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
