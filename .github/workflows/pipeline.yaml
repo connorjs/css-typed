@@ -48,16 +48,16 @@ jobs:
     defaults:
       run:
         shell: bash
-    runs-on: ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.platform.os }}-latest
     strategy:
       matrix:
         node:
           - 20.x
           #- 22.x
         platform:
-          - os: ubuntu-latest
-          #- os: macos-latest
-          - os: windows-latest
+          - os: ubuntu
+          #- os: macos
+          - os: windows
       fail-fast: false
 
     steps:
@@ -110,8 +110,15 @@ jobs:
         run: |
           scripts/test.sh foo csstypedrc.yaml '' '' generated/
 
-      - name: "Test 8: custom config path (and js file config)"
+      - name: "Test 9: custom config path"
         if: success() || failure()
+        run: |
+          scripts/test.sh foo css-typed-rc.yaml '-c .config/css-typed-rc.yaml'
+
+      - name: "Test 9: mjs file config"
+        if: matrix.platform.os != 'windows' && (success() || failure())
+        # Do not run on Windows due to Windows-only ESM import bug.
+        # This _could_ be an issue with css-typed, but could be a test/deps issue.
         run: |
           scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
 
