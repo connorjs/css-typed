@@ -24,4 +24,4 @@ const result = await build({
 });
 
 const analysis = await analyzeMetafile(result.metafile);
-console.log(analysis);
+console.info(analysis);

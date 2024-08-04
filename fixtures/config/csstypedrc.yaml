@@ -1,0 +1,2 @@
+pattern: "*.css"
+outdir: generated

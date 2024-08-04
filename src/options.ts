@@ -1,5 +1,6 @@
 export type Options = {
 	localsConvention?: LocalsConvention;
+	outdir?: string;
 };
 
 export type LocalsConvention = (typeof localsConventionChoices)[number];
