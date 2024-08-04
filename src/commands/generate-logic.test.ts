@@ -3,9 +3,10 @@ import * as process from "node:process";
 
 import { describe, expect, it } from "vitest";
 
-import { dtsPath, generateDeclaration } from "./logic.js";
-import type { Options } from "./options.ts";
-import { localsConventionChoices } from "./options.ts";
+import { fixturesRoot } from "../../fixtures/fixtures-root.ts";
+import type { Options } from "../options.ts";
+import { localsConventionChoices } from "../options.ts";
+import { dtsPath, generateDeclaration } from "./generate-logic.ts";
 
 describe(`css-typed`, () => {
 	it(`should not generate an empty declaration file [#9]`, async () => {
@@ -54,5 +55,5 @@ describe(`css-typed`, () => {
 });
 
 function fixtureFile(filename: string) {
-	return path.join(import.meta.dirname, `..`, `fixtures`, filename);
+	return path.join(fixturesRoot, filename);
 }

@@ -3,7 +3,7 @@ import type { LilconfigResult, Loaders } from "lilconfig";
 import { lilconfig } from "lilconfig";
 import type { OverrideProperties } from "type-fest";
 
-import type { Options } from "./options.ts";
+import type { Options } from "../options.ts";
 
 const name = `css-typed`;
 const rcAlt = `csstyped`;
