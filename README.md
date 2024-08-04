@@ -93,7 +93,7 @@ Extensionless "rc" files can have JSON or YAML format.
 Under the hood, `css-typed` uses [lilconfig] to load configuration files.
 It supports YAML files via [js-yaml].
 
-See [src/config.ts](src/cli/config.ts) for the implementation.
+See [config.ts](src/cli/config.ts) for the implementation.
 
 </details>
 

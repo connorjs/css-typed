@@ -21,7 +21,8 @@ The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SH
 The [src](./src) directory contains the main and test sources.
 
 - [main.ts](./src/main.ts) represents the entry point (the CLI tool).
-- [logic.ts](src/commands/logic.ts) represents the unit-tested logic.
+- [cli](./src/cli) contains CLI-related code that is not unit tested.
+- [commands](src/commands) represents the unit-tested commands and logic.
 
 The [fixtures](fixtures) directory contains files for data-file-driven unit tests.
 

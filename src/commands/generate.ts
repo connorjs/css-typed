@@ -5,6 +5,13 @@ import path from "node:path";
 import type { Options } from "../options.ts";
 import { dtsPath, generateDeclaration } from "./generate-logic.ts";
 
+/**
+ * Generates the TypeScript declaration files and writes them to file.
+ *
+ * @param files - Paths to the original stylesheet files.
+ * @param options - Options object.
+ * @returns Empty promise indicating when writing has completed.
+ */
 export async function generate(files: string[], options: Options) {
 	const time = new Date().toISOString();
 	await Promise.all(
@@ -16,14 +23,7 @@ export async function generate(files: string[], options: Options) {
 	);
 }
 
-/**
- * Writes the TypeScript declaration content to file. Handles the output path.
- *
- * @param file - Path to the original stylesheet file. NOT the path to write.
- * @param outdir - Output directory to which to write.
- * @param ts - The TypeScript declaration content to write.
- * @returns Empty promise indicating when writing has completed.
- */
+/** Writes the TypeScript declaration content to file. Handles the output path. */
 async function writeDeclarationFile(
 	file: string,
 	outdir: string | undefined,
