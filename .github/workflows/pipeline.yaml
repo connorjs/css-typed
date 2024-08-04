@@ -88,45 +88,45 @@ jobs:
       - name: "Test 2: localsConvention, first position"
         if: success() || failure()
         run: |
-          scripts/test.sh casing/casing '' '--localsConvention camelCaseOnly *.css' casing/camelCaseOnly
+          scripts/test-gen.sh casing/casing '' '--localsConvention camelCaseOnly *.css' casing/camelCaseOnly
 
       - name: "Test 3: localsConvention, second position"
         if: success() || failure()
         run: |
-          scripts/test.sh casing/casing '' '*.css --localsConvention camelCaseOnly' casing/camelCaseOnly
+          scripts/test-gen.sh casing/casing '' '*.css --localsConvention camelCaseOnly' casing/camelCaseOnly
 
       - name: "Test 4: relative outdir"
         if: success() || failure()
         run: |
-          scripts/test.sh foo '' '--outdir generated *.css' '' generated/
+          scripts/test-gen.sh foo '' '--outdir generated *.css' '' generated/
 
       - name: "Test 5: absolute outdir"
         if: success() || failure()
         run: |
-          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
+          scripts/test-gen.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
         # Note: This test uses double quotes, which expands differently.
 
       - name: "Test 6: json file config"
         if: success() || failure()
         run: |
-          scripts/test.sh foo csstypedrc.json
+          scripts/test-gen.sh foo csstypedrc.json
 
       - name: "Test 7: yaml file config"
         if: success() || failure()
         run: |
-          scripts/test.sh foo csstypedrc.yaml '' '' generated/
+          scripts/test-gen.sh foo csstypedrc.yaml '' '' generated/
 
       - name: "Test 8: custom config path"
         if: success() || failure()
         run: |
-          scripts/test.sh foo css-typed-rc.yaml '-c .config/css-typed-rc.yaml'
+          scripts/test-gen.sh foo css-typed-rc.yaml '-c .config/css-typed-rc.yaml'
 
       - name: "Test 9: mjs file config"
         if: matrix.platform.os != 'windows' && (success() || failure())
         # Do not run on Windows due to Windows-only ESM import bug.
         # This _could_ be an issue with css-typed, but could be a test/deps issue.
         run: |
-          scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
+          scripts/test-gen.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
 
   Publish:
     if: ${{ github.ref == 'refs/heads/main' }}
