@@ -53,10 +53,10 @@ jobs:
       matrix:
         node:
           - 20.x
-          #- 22.x
+          - 22.x
         platform:
           - os: ubuntu
-          #- os: macos
+          - os: macos
           - os: windows
       fail-fast: false
 
@@ -111,7 +111,7 @@ jobs:
         run: |
           scripts/test.sh foo csstypedrc.yaml '' '' generated/
 
-      - name: "Test 9: custom config path"
+      - name: "Test 8: custom config path"
         if: success() || failure()
         run: |
           scripts/test.sh foo css-typed-rc.yaml '-c .config/css-typed-rc.yaml'
