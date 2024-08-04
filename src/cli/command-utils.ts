@@ -60,6 +60,7 @@ function cssTypedAction(
 
 			// Resolve options from file config and CLI. CLI overrides file config.
 			const options: Options = { ...fileConfig, ...cliOptions };
+			console.debug(`[debug] Resolved options to`, options);
 
 			// Pattern is required. CLI overrides file config.
 			const pattern = cliPattern ?? filePattern;
