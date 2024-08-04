@@ -42,6 +42,11 @@ function cssTypedAction(
 ) {
 	return this.action(
 		async (cliPattern, { config: cliConfigPath, ...cliOptions }, program) => {
+			console.debug(`[debug] CLI input:`, `pattern=${cliPattern}`, {
+				config: cliConfigPath,
+				...cliOptions,
+			});
+
 			// Load file configuration first
 			const configResult = await loadFileConfig(cliConfigPath);
 			if (configResult?.filepath) {
