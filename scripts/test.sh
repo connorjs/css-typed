@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
+IFS=$' ' # We want space splitting for this script
 
 # $1 is the input name, relative to `fixtures`. Required.
 input=$1
@@ -9,7 +9,7 @@ input=$1
 config=${2:-$1.yaml}
 
 # $3 is the options. Defaults to "".
-IFS=" " read -r -a options <<< "${3:-}"
+read -r -a options <<< "${3:-}"
 
 # $4 is the output name, relative to `fixtures`. Defaults to $1.
 output=${4:-$1}
