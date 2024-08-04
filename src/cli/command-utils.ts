@@ -42,6 +42,11 @@ function cssTypedAction(
 ) {
 	return this.action(
 		async (cliPattern, { config: cliConfigPath, ...cliOptions }, program) => {
+			console.debug(`[debug] CLI input:`, `pattern=${cliPattern}`, {
+				config: cliConfigPath,
+				...cliOptions,
+			});
+
 			// Load file configuration first
 			const configResult = await loadFileConfig(cliConfigPath);
 			if (configResult?.filepath) {
@@ -60,6 +65,7 @@ function cssTypedAction(
 
 			// Resolve options from file config and CLI. CLI overrides file config.
 			const options: Options = { ...fileConfig, ...cliOptions };
+			console.debug(`[debug] Resolved options to`, options);
 
 			// Pattern is required. CLI overrides file config.
 			const pattern = cliPattern ?? filePattern;

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail # Removed `-u` which failed on macos for `options`
+set -exo pipefail # Removed `-u` which failed on macos for `options`
 IFS=$' ' # We want space splitting for this script
 
 # $1 is the input name, relative to `fixtures`. Required.
@@ -31,9 +31,8 @@ pushd $RUNNER_TEMP > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
 # But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-echo "css-typed " "${options[@]}"
-# shellcheck disable=SC2068
-$GITHUB_WORKSPACE/dist/main.js ${options[@]}
+echo "css-typed gen" "${options[@]}"
+$GITHUB_WORKSPACE/dist/main.js gen "${options[@]}"
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
