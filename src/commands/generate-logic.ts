@@ -5,7 +5,7 @@ import path from "node:path";
 import { parse as parseCss, walk } from "css-tree";
 import camelCase from "lodash.camelcase";
 
-import type { LocalsConvention, Options } from "./options.ts";
+import type { LocalsConvention, Options } from "../options.ts";
 
 /**
  * Generates TypeScript declaration file for the stylesheet file at the given
