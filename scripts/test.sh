@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail # Removed `-u` which failed on macos for `options`
 IFS=$' ' # We want space splitting for this script
 
 # $1 is the input name, relative to `fixtures`. Required.
