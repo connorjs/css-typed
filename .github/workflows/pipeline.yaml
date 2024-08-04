@@ -98,7 +98,8 @@ jobs:
       - name: "Test 5: absolute outdir"
         if: success() || failure()
         run: |
-          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated \"*.css\"" "" "$GITHUB_WORKSPACE"/generated/
+          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
+        # Note: This test uses double quotes, which expands differently.
 
       - name: "Test 6: json file config"
         if: success() || failure()
