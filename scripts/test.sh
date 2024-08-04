@@ -31,7 +31,7 @@ pushd $RUNNER_TEMP > /dev/null || exit
 
 # `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
 # But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-echo "css-typed ${options[*]}"
+echo "css-typed " "${options[@]}"
 # shellcheck disable=SC2068
 $GITHUB_WORKSPACE/dist/main.js ${options[@]}
 
