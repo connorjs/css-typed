@@ -8,7 +8,7 @@ on:
 
 jobs:
   ci-build:
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build@v1.yaml@features/npm-ci-build
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-ci-build
     with:
       project-type: fail-for-testing
 
