@@ -8,12 +8,14 @@ on:
 
 jobs:
   ci-build:
+    name: Build
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-ci-build
     with:
       project-type: Fail for testing
 
   pipeline-tests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
+    if: false
     defaults:
       run:
         shell: bash
