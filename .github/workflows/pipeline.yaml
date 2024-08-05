@@ -7,43 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  Build:
-    name: Build
-    runs-on: ubuntu-latest
-    outputs:
-      GitVersion_SemVer: ${{ steps.GitVersion.outputs.GitVersion_SemVer }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Full depth (not shallow) for GitVersion and better relevancy of Sonar analysis
+  ci-build:
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build@v1.yaml
+    with:
+      project-type: fail-for-testing
 
-      - name: Set up GitVersion
-        uses: gittools/actions/gitversion/setup@v2.0.1
-        with:
-          versionSpec: 6.x
-
-      - name: Execute GitVersion
-        id: GitVersion
-        uses: gittools/actions/gitversion/execute@v2.0.1
-        with:
-          overrideConfig: |
-            workflow=GitHubFlow/v1
-            mode=ContinuousDeployment
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version-file: .node-version
-
-      - name: Install
-        run: npm ci
-
-      - name: CI build
-        run: npm run ci-build
-
-  Test:
+  pipeline-tests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
     defaults:
       run:
@@ -123,15 +92,15 @@ jobs:
         run: |
           scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
 
-  Publish:
-    if: ${{ github.ref == 'refs/heads/main' }}
+  publish:
     name: Publish
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs:
-      - Build # For version variable
-      - Test # Requires passing tests
+      - ci-build # For version variable
+      - pipeline-tests # Requires passing tests
     runs-on: ubuntu-latest
     env:
-      GitVersion_SemVer: ${{needs.Build.outputs.GitVersion_SemVer}}
+      semVer: ${{needs.ci-build.outputs.semVer}}
     permissions:
       contents: write
       id-token: write
@@ -145,7 +114,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Set version
-        run: sed -i 's/0.0.0-gitversion/${{ env.GitVersion_SemVer }}/g' package.json
+        run: sed -i 's/0.0.0-gitversion/${{ env.semVer }}/g' package.json
 
       - name: Install
         run: npm install
@@ -157,5 +126,5 @@ jobs:
 
       - name: git tag
         run: |
-          git tag v${{ env.GitVersion_SemVer }}
-          git push origin tag v${{ env.GitVersion_SemVer }}
+          git tag v${{ env.semVer }}
+          git push origin tag v${{ env.semVer }}
