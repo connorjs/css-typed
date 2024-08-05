@@ -7,11 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  ci-build:
+  CiBuild:
     name: CI Build
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-ci-build
 
-  pipeline-tests:
+  PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
     if: false
     defaults:
@@ -92,15 +92,15 @@ jobs:
         run: |
           scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
 
-  publish:
+  Publish:
     name: Publish
     if: ${{ github.ref == 'refs/heads/main' }}
     needs:
-      - ci-build # For version variable
-      - pipeline-tests # Requires passing tests
+      - CiBuild # For version variable
+      - PipelineTests # Requires passing tests
     runs-on: ubuntu-latest
     env:
-      semVer: ${{needs.ci-build.outputs.semVer}}
+      semVer: ${{needs.CiBuild.outputs.semVer}}
     permissions:
       contents: write
       id-token: write
