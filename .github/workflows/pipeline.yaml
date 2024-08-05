@@ -9,7 +9,7 @@ on:
 jobs:
   CiBuild:
     name: CI Build
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-ci-build
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml
 
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
