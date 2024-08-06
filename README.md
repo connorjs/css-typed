@@ -35,12 +35,14 @@ npm install --save-dev css-typed
 Run `css-typed` and pass it a glob targeting your CSS files.
 
 ```shell
-npx css-typed 'src/**/*.css'
+npx css-typed "src/**/*.css"
 ```
 
 This will generate `.d.css.ts` files next to the original source files.
 
-> **Note**
+See the [run script recipe](#run-script) for adding to your `package.json`.
+
+> [!NOTE]
 >
 > A CSS module file with the name `foo.module.css` will emit `foo.module.d.css.ts`.
 
@@ -114,7 +116,7 @@ For example, `my-class` becomes `myClass` and you cannot use `my-class` in JS/TS
 Modern bundlers or build system such as Vite and Gatsby support this transformation.
 The default matches CSS naming practices (`kebab-case`).
 
-> **IMPORTANT**
+> [!IMPORTANT]
 >
 > Note that `camelCase` and `dashes` MAY have TypeScript bugs.
 > TypeScript 5.6 may help with the named exports for these.
@@ -127,17 +129,22 @@ The default matches CSS naming practices (`kebab-case`).
 
 ### Run script
 
-To run it as part of your build, you will likely include it as a run script, maybe as `codegen` or `pretsc`.
+To run it as part of your build, you will likely include it as a run script, maybe as `codegen`, `css-typed`, or `pretsc`.
 
 ```json
 {
 	"scripts": {
 		"codegen": "css-typed \"src/**/*.css\"",
+		"css-typed": "css-typed \"src/**/*.css\"",
 		"pretsc": "css-typed \"src/**/*.css\"",
 		"tsc": "tsc"
 	}
 }
 ```
+
+> [!NOTE]
+>
+> Use `\"` in your run scripts for Windows OS compatibility.
 
 ### Watch
 
