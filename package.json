@@ -59,7 +59,7 @@
 		"@types/css-tree": "^2.3.8",
 		"@types/js-yaml": "^4.0.9",
 		"@types/lodash.camelcase": "^4.3.9",
-		"@types/node": "^20.14.14",
+		"@types/node": "^22.1.0",
 		"esbuild": "~0.23.0",
 		"eslint-config-connorjs": "^1.1.0",
 		"husky": "^9.1.4",
