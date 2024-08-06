@@ -33,10 +33,12 @@ fi
 
 pushd $TEST_DIR > /dev/null || exit
 
-set -x
+set -x # Print the css-typed command exactly as executed
+
 # shellcheck disable=SC2068
 npx css-typed ${options[@]}
-set +x
+
+{ set +x; } 2>/dev/null # Turn off command printing, and do not print set +X
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.
