@@ -9,7 +9,13 @@ on:
 jobs:
   CiBuild:
     name: CI Build
+
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-pack-and-publish
+
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
 
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
@@ -101,3 +107,7 @@ jobs:
     with:
       npmPackFilename: ${{needs.CiBuild.outputs.npmPackFilename}}
       semVer: ${{needs.CiBuild.outputs.semVer}}
+
+    permissions:
+      contents: write
+      id-token: write
