@@ -67,7 +67,7 @@ jobs:
         run: |
           mkdir -p sandbox
           cd sandbox
-          npm install ${{ needs.CiBuild.outputs.npmPackFilename }}
+          npm install ../${{ needs.CiBuild.outputs.npmPackFilename }}
 
       - name: "Test 1: default case"
         run: |
