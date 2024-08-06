@@ -11,6 +11,23 @@ jobs:
     name: CI Build
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
 
+  Publish:
+    name: Publish
+    needs:
+      - CiBuild # For version variable
+      - PipelineTests # Requires passing tests
+
+    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
+    with:
+      npmPackFilename: ${{ needs.CiBuild.outputs.npmPackFilename }}
+      semVer: ${{ needs.CiBuild.outputs.semVer }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    permissions:
+      contents: write
+      id-token: write
+
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
     defaults:
@@ -90,20 +107,3 @@ jobs:
         # This _could_ be an issue with css-typed, but could be a test/deps issue.
         run: |
           scripts/test.sh foo custom-config-path.config.mjs '-c .config/custom-config-path.config.mjs'
-
-  Publish:
-    name: Publish
-    needs:
-      - CiBuild # For version variable
-      - PipelineTests # Requires passing tests
-
-    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
-    with:
-      npmPackFilename: ${{ needs.CiBuild.outputs.npmPackFilename }}
-      semVer: ${{ needs.CiBuild.outputs.semVer }}
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    permissions:
-      contents: write
-      id-token: write
