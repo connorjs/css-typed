@@ -9,7 +9,7 @@ on:
 jobs:
   CiBuild:
     name: CI Build
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-pack-and-publish
 
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
@@ -93,37 +93,11 @@ jobs:
 
   Publish:
     name: Publish
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs:
       - CiBuild # For version variable
       - PipelineTests # Requires passing tests
-    runs-on: ubuntu-latest
-    env:
+
+    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@features/npm-pack-and-publish
+    with:
+      npmPackFilename: ${{needs.CiBuild.outputs.npmPackFilename}}
       semVer: ${{needs.CiBuild.outputs.semVer}}
-    permissions:
-      contents: write
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          cache: npm
-          node-version-file: .node-version
-          registry-url: https://registry.npmjs.org
-
-      - name: Set version
-        run: sed -i 's/0.0.0-gitversion/${{ env.semVer }}/g' package.json
-
-      - name: Install
-        run: npm ci
-
-      - name: Publish
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: git tag
-        run: |
-          git tag v${{ env.semVer }}
-          git push origin tag v${{ env.semVer }}
