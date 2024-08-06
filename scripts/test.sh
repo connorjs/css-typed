@@ -17,23 +17,26 @@ output=${4:-$1}
 # $5 is the path prefix for output. Defaults to "".
 prefix=${5:-}
 
-# Run from $RUNNER_TEMP for auto-cleanup.
-cp fixtures/${input}.css $RUNNER_TEMP/test.css
-cp fixtures/${output}.d.css.ts $RUNNER_TEMP/expected.d.css.ts
+# `sandbox` is where we installed css-typed.
+# Create fresh tmp directory under it each time (under for npx usage).
+TEST_DIR=sandbox/tmp
+rm -rf $TEST_DIR
+mkdir -p $TEST_DIR
 
-rm -rf "${RUNNER_TEMP:?}/.config"
+cp fixtures/${input}.css $TEST_DIR/test.css
+cp fixtures/${output}.d.css.ts $TEST_DIR/expected.d.css.ts
+
 if [ -f fixtures/config/${config} ]; then
-	mkdir -p $RUNNER_TEMP/.config
-	cp fixtures/config/${config} $RUNNER_TEMP/.config/${config}
+	mkdir -p $TEST_DIR/.config
+	cp fixtures/config/${config} $TEST_DIR/.config/${config}
 fi
 
-pushd $RUNNER_TEMP > /dev/null || exit
+pushd $TEST_DIR > /dev/null || exit
 
-# `./dist/main.js` is executing local `css-typed` as if installed (same as `bin`).
-# But it is `$GITHUB_WORKSPACE/dist/main.js` b/c we `cd $RUNNER_TEMP`.
-echo "css-typed " "${options[@]}"
+set -x
 # shellcheck disable=SC2068
-$GITHUB_WORKSPACE/dist/main.js ${options[@]}
+npx css-typed ${options[@]}
+set +x
 
 # Use `diff` to compare the files.
 # Use `-I '//.*'` to ignore the first line (comment) which has generated path and timestamp.

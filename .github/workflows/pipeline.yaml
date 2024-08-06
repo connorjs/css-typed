@@ -14,7 +14,7 @@ jobs:
   Publish:
     name: Publish
     needs:
-      - CiBuild # For version variable
+      - CiBuild
       - PipelineTests # Requires passing tests
 
     uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
@@ -30,10 +30,14 @@ jobs:
 
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
+    needs:
+      - CiBuild
+
+    runs-on: ${{ matrix.platform.os }}-latest
     defaults:
       run:
         shell: bash
-    runs-on: ${{ matrix.platform.os }}-latest
+
     strategy:
       matrix:
         node:
@@ -55,11 +59,11 @@ jobs:
           cache: npm
           node-version: ${{ matrix.node }}
 
-      - name: Install
-        run: npm install
-
-      - name: Build
-        run: npm run build
+      - name: Install css-typed
+        run: |
+          mkdir -p sandbox
+          cd sandbox
+          npm install ${{ needs.CiBuild.outputs.npmPackFilename }}
 
       - name: "Test 1: default case"
         run: |
@@ -83,7 +87,7 @@ jobs:
       - name: "Test 5: absolute outdir"
         if: success() || failure()
         run: |
-          scripts/test.sh foo "" "-o $GITHUB_WORKSPACE/generated *.css" "" "$GITHUB_WORKSPACE"/generated/
+          scripts/test.sh foo "" "-o $RUNNER_TEMP/generated *.css" "" "$RUNNER_TEMP"/generated/
         # Note: This test uses double quotes, which expands differently.
 
       - name: "Test 6: json file config"
