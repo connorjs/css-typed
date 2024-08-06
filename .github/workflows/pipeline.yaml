@@ -99,8 +99,10 @@ jobs:
 
     uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@features/npm-pack-and-publish
     with:
-      npmPackFilename: ${{needs.CiBuild.outputs.npmPackFilename}}
-      semVer: ${{needs.CiBuild.outputs.semVer}}
+      npmPackFilename: ${{ needs.CiBuild.outputs.npmPackFilename }}
+      semVer: ${{ needs.CiBuild.outputs.semVer }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     permissions:
       contents: write
