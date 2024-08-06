@@ -9,7 +9,7 @@ on:
 jobs:
   CiBuild:
     name: CI Build
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@features/npm-pack-and-publish
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
 
   PipelineTests:
     name: Test (${{ matrix.node }} | ${{ matrix.platform.os }})
@@ -97,7 +97,7 @@ jobs:
       - CiBuild # For version variable
       - PipelineTests # Requires passing tests
 
-    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@features/npm-pack-and-publish
+    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
     with:
       npmPackFilename: ${{ needs.CiBuild.outputs.npmPackFilename }}
       semVer: ${{ needs.CiBuild.outputs.semVer }}
